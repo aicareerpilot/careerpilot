@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CareerPilot</title>
+<meta name="description" content="CareerPilot: your AI-powered co-pilot for every stage of your career. Free step-by-step guides and ready-made prompts for your job search.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: header, a compact cream hero with the illustration, the guide in three numbered steps,
+   then a navy footer. Navy leads, teal supports, amber is a small accent. All colours are tokens. */
+:root {
+  --bg: #f5f8fb;
+  --hero: #fef9ef;
+  --art: #fef9ef;
+  --surface: #ffffff;
+  --field: #ffffff;
+  --ink: #12263a;
+  --muted: #4d5d6e;
+  --line: #d3dce6;
+  --field-line: #7f93a8;
+  --brand: #0a3763;
+  --brand-ink: #ffffff;
+  --brand-hover: #0e4a85;
+  --teal: #349d9b;
+  --teal-ink: #1a6b69;
+  --teal-soft: #e2f2f1;
+  --amber: #f5c06a;
+  --amber-soft: #fdf0d5;
+  --amber-ink: #6b4705;
+  --soft: #e9eff6;
+  --foot-bg: #0a3763;
+  --foot-ink: #ffffff;
+  --foot-muted: #d2deeb;
+  --foot-link: #f8cf8a;
+  --foot-line: #2a5482;
+  --shadow: 0 1px 2px rgba(10, 55, 99, 0.06), 0 8px 24px rgba(10, 55, 99, 0.07);
+  --dock-shadow: 0 -6px 24px rgba(10, 55, 99, 0.16);
+  --art-pad: 0px;
+  --display: "Plus Jakarta Sans", "Segoe UI", Helvetica, Arial, sans-serif;
+  --body: "Atkinson Hyperlegible", "Segoe UI", Helvetica, Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b1622; --hero: #0e1d2d; --art: #fef9ef; --surface: #132231; --field: #0e1b29;
+    --ink: #e8eef5; --muted: #a6b5c5; --line: #27394c; --field-line: #62798f;
+    --brand: #93c4f0; --brand-ink: #07203a; --brand-hover: #b3d6f6;
+    --teal: #4fb8b5; --teal-ink: #7ed6d3; --teal-soft: #12383a;
+    --amber: #f5c06a; --amber-soft: #3b2e14; --amber-ink: #f8cf8a;
+    --soft: #1a2d40;
+    --foot-bg: #081019; --foot-ink: #e8eef5; --foot-muted: #a6b5c5; --foot-link: #f8cf8a; --foot-line: #27394c;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+    --dock-shadow: 0 -6px 24px rgba(0, 0, 0, 0.5);
+    --art-pad: 14px;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b1622; --hero: #0e1d2d; --art: #fef9ef; --surface: #132231; --field: #0e1b29;
+  --ink: #e8eef5; --muted: #a6b5c5; --line: #27394c; --field-line: #62798f;
+  --brand: #93c4f0; --brand-ink: #07203a; --brand-hover: #b3d6f6;
+  --teal: #4fb8b5; --teal-ink: #7ed6d3; --teal-soft: #12383a;
+  --amber: #f5c06a; --amber-soft: #3b2e14; --amber-ink: #f8cf8a;
+  --soft: #1a2d40;
+  --foot-bg: #081019; --foot-ink: #e8eef5; --foot-muted: #a6b5c5; --foot-link: #f8cf8a; --foot-line: #27394c;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.25);
+  --dock-shadow: 0 -6px 24px rgba(0, 0, 0, 0.5);
+  --art-pad: 14px;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 80px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.55; }
+[hidden] { display: none !important; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+@media (min-width: 900px) { .wrap { padding: 0 32px; } }
+svg.i { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+
+.top { position: sticky; top: 0; z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 64px; }
+.brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-family: var(--display); font-weight: 800; font-size: 20px; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
+.brand .mark { width: 36px; height: 36px; border-radius: 10px; background: var(--brand); color: var(--brand-ink); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.brand .mark svg { width: 22px; height: 22px; }
+.top nav { display: flex; gap: 2px; }
+.top nav a { color: var(--muted); text-decoration: none; font-size: 16px; font-weight: 700; padding: 10px 12px; min-height: 44px; display: inline-flex; align-items: center; border-radius: 8px; }
+.top nav a:hover { color: var(--brand); background: var(--soft); }
+@media (max-width: 360px) { .top .wrap { padding: 0 14px; gap: 6px; } .brand { font-size: 18px; gap: 8px; } .top nav a { padding: 10px 9px; } }
+
+.hero { background: var(--hero); border-bottom: 1px solid var(--line); }
+.hero .wrap { padding-top: 20px; padding-bottom: 20px; display: grid; gap: 14px; align-items: center; }
+.hero-text { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; min-width: 0; }
+h1 { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 7vw, 48px); line-height: 1.12; margin: 0; text-wrap: balance; letter-spacing: -0.02em; max-width: 18ch; color: var(--ink); }
+.subline { margin: 0; color: var(--ink); max-width: 46ch; font-size: 18px; }
+.art { background: var(--art); padding: var(--art-pad); border-radius: 20px; width: 100%; max-width: 200px; margin: 0 auto; }
+.art img { display: block; width: 100%; max-width: 100%; height: auto; border-radius: 12px; }
+@media (min-width: 860px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr); gap: 40px; padding-top: 36px; padding-bottom: 36px; }
+  .hero-text { gap: 14px; }
+  .art { max-width: 340px; margin: 0 0 0 auto; }
+}
+
+main { display: flex; flex-direction: column; gap: 44px; padding: 28px 0 56px; }
+section, .block { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.sec-head { display: flex; flex-direction: column; gap: 6px; }
+h2 { font-family: var(--display); font-weight: 700; font-size: clamp(24px, 4.6vw, 30px); line-height: 1.2; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+h3 { font-family: var(--display); font-size: 19px; font-weight: 700; line-height: 1.3; margin: 0; display: flex; align-items: center; gap: 12px; }
+h3 .n { font-variant-numeric: tabular-nums; color: var(--brand-ink); background: var(--brand); border-radius: 50%; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; font-size: 16px; flex: none; }
+h4 { font-family: var(--display); font-size: 17px; font-weight: 700; margin: 0; }
+p { margin: 0; }
+.small { font-size: 16px; color: var(--muted); }
+.ink { color: var(--ink); }
+a { color: var(--brand); text-underline-offset: 2px; }
+
+.tile { width: 48px; height: 48px; border-radius: 12px; background: var(--teal-soft); color: var(--teal-ink); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+
+.welcome { background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--amber); border-radius: 16px; padding: 22px 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow); }
+.welcome form { display: flex; flex-direction: column; gap: 16px; }
+fieldset { border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+legend, .field label { font-size: 16px; font-weight: 700; padding: 0; margin-bottom: 2px; }
+.radios { display: flex; gap: 10px; flex-wrap: wrap; }
+.radio { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--field-line); border-radius: 10px; padding: 10px 18px; min-height: 48px; cursor: pointer; background: var(--field); }
+.radio input { width: 20px; height: 20px; margin: 0; accent-color: var(--brand); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 520px) { .grid2 { grid-template-columns: 1fr; } }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field .hint { font-size: 15px; color: var(--muted); font-weight: 400; }
+select, input[type="text"] { font: inherit; color: var(--ink); background: var(--field); border: 1px solid var(--field-line); border-radius: 10px; padding: 11px 12px; min-height: 48px; width: 100%; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+.tasks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 900px) { .tasks { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 600px) { .tasks { grid-template-columns: 1fr; gap: 10px; } }
+.task { position: relative; font: inherit; color: inherit; text-align: left; cursor: pointer; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; min-height: 76px; display: flex; align-items: flex-start; gap: 14px; box-shadow: var(--shadow); }
+.task-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.task-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; min-height: 24px; }
+.task .stage { font-size: 13px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--teal-ink); }
+.task strong { font-family: var(--display); font-weight: 700; font-size: 17px; line-height: 1.3; }
+.task .sub { font-size: 16px; color: var(--muted); line-height: 1.4; }
+.task:hover { border-color: var(--brand); }
+.task[aria-pressed="true"] { border-color: var(--brand); box-shadow: 0 0 0 2px var(--brand); background: var(--soft); }
+.task[aria-pressed="true"] .tile { background: var(--brand); color: var(--brand-ink); }
+.tag { font-style: normal; font-size: 13px; font-weight: 700; color: var(--amber-ink); background: var(--amber-soft); border-radius: 999px; padding: 1px 10px; }
+.picked { display: none; position: absolute; top: -12px; right: 12px; align-items: center; gap: 4px; font-size: 13px; font-weight: 700; color: var(--brand-ink); background: var(--brand); border-radius: 999px; padding: 2px 10px 2px 6px; }
+.picked svg { width: 16px; height: 16px; stroke-width: 2.5; }
+.task[aria-pressed="true"] .picked { display: inline-flex; }
+.tasks:not(.chosen) .task[aria-pressed="true"] .picked { display: none; }
+.tasks:not(.chosen) .task[aria-pressed="true"] { box-shadow: none; border-color: var(--line); background: var(--surface); }
+.tasks:not(.chosen) .task[aria-pressed="true"] .tile { background: var(--teal-soft); color: var(--teal-ink); }
+
+/* The guide is one full-width column at every size: 1 guide and options, 2 the prompt, 3 files and steps. */
+.flow { display: flex; flex-direction: column; gap: 40px; min-width: 0; }
+.options { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 16px; display: flex; flex-direction: column; gap: 14px; }
+.field > label.muted { color: var(--muted); font-size: 16px; }
+.checks { display: flex; flex-direction: column; gap: 2px; }
+.check { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; min-height: 44px; cursor: pointer; }
+.check input { width: 22px; height: 22px; margin: 2px 0 0; flex: none; accent-color: var(--brand); }
+.check-hint { margin: -6px 0 4px 34px; font-size: 15px; color: var(--muted); }
+.youpicked { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.linkbtn { font: inherit; font-weight: 700; color: var(--brand); background: transparent; border: 0; padding: 0 8px; min-height: 44px; min-width: 44px; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; border-radius: 8px; }
+.linkbtn:hover { background: var(--soft); }
+
+.promptbox { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); }
+.promptbox .cap { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--line); font-size: 14px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal-ink); }
+.promptbox .cap svg { width: 20px; height: 20px; }
+#prompt { margin: 0; padding: 16px; font-family: var(--body); font-size: 16px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 55vh; overflow-y: auto; }
+@media (min-width: 701px) { #prompt { max-height: 460px; } }
+.bar { display: flex; flex-wrap: wrap; gap: 10px; padding: 14px 16px; border-top: 1px solid var(--line); background: var(--soft); }
+.btn { font: inherit; font-weight: 700; cursor: pointer; border-radius: 10px; min-height: 48px; padding: 11px 22px; border: 2px solid var(--brand); text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.bar .btn { flex: 1 1 280px; }
+.bar .acct { flex: 1 1 100%; font-size: 16px; color: var(--ink); }
+.bar .btn.primary { min-height: 54px; font-size: 18px; }
+.btn.primary { background: var(--brand); color: var(--brand-ink); }
+.btn.primary:hover { background: var(--brand-hover); border-color: var(--brand-hover); }
+.btn.ghost { background: transparent; color: var(--brand); }
+.btn.ghost:hover { background: var(--soft); }
+.bar .btn.ghost { background: var(--surface); }
+.btn[disabled] { opacity: 0.6; cursor: default; }
+.status { font-size: 16px; color: var(--muted); min-height: 1.4em; }
+
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 16px; display: flex; flex-direction: column; gap: 12px; }
+.stack { display: flex; flex-direction: column; gap: 14px; }
+.stack:empty { display: none; }
+.notice { border-left: 4px solid var(--amber); }
+.attach { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.attach li { display: flex; flex-direction: column; gap: 2px; }
+.doc { display: flex; gap: 12px; align-items: center; min-height: 36px; padding-top: 6px; }
+.doc svg.i { width: 22px; height: 22px; color: var(--teal-ink); }
+details { margin-left: 34px; font-size: 16px; color: var(--muted); }
+details.more { margin-left: 0; border-top: 1px solid var(--line); }
+details.more[open] { padding-bottom: 8px; }
+details.more > * + * { margin-top: 8px; }
+.tips { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; }
+summary { cursor: pointer; color: var(--brand); font-weight: 700; padding: 10px 0; min-height: 48px; display: flex; align-items: center; gap: 10px; list-style: none; }
+summary::-webkit-details-marker { display: none; }
+summary::before { content: "+"; flex: none; width: 24px; height: 24px; border: 2px solid currentColor; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 18px; line-height: 1; }
+details[open] > summary::before { content: "\2212"; }
+ol { margin: 0; padding-left: 24px; display: flex; flex-direction: column; gap: 10px; }
+ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
+.follow { display: flex; flex-direction: column; gap: 8px; }
+.followrow { display: flex; gap: 10px; align-items: center; justify-content: space-between; border: 1px solid var(--line); border-radius: 10px; padding: 8px 8px 8px 14px; font-size: 16px; }
+.mini { font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; color: var(--brand); background: transparent; border: 1px solid var(--field-line); border-radius: 8px; min-height: 44px; padding: 6px 14px; flex: none; }
+.mini:hover { background: var(--soft); }
+
+.about { background: var(--foot-bg); color: var(--foot-ink); }
+.about .wrap { padding-top: 44px; padding-bottom: 48px; display: flex; flex-direction: column; gap: 14px; }
+.about p { max-width: 68ch; }
+.about a { color: var(--foot-link); }
+.about :focus-visible { outline-color: var(--foot-link); }
+.learn { padding: 8px 0 40px; }
+.learn-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
+.learn-text { display: flex; flex-direction: column; gap: 4px; flex: 1 1 260px; }
+.learn-text h2 { font-size: 20px; margin: 0; }
+.learn-text p { margin: 0; color: var(--ink); }
+.learn-btn { flex: 0 0 auto; }
+.dev { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+.dev-name { margin: 0; }
+.li-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 16px 8px 10px; border-radius: 999px; background: #ffffff; color: #0a3763; font-weight: 700; text-decoration: none; border: 1px solid transparent; }
+.about .li-btn, .about .li-btn:hover, .about .li-btn:focus, .about .li-btn:visited { color: #0a3763; }
+.li-btn:hover, .li-btn:focus-visible { background: #eaf2fb; }
+.li-mark { width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; border-radius: 5px; background: #0a66c2; color: #ffffff; flex: none; overflow: hidden; }
+.li-mark img { width: 26px; height: 26px; display: block; }
+.fine { font-size: 16px; color: var(--foot-muted); border-top: 1px solid var(--foot-line); padding-top: 16px; }
+
+.dock { display: none; }
+@media (max-width: 700px) {
+  .dock { display: block; position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: var(--surface); border-top: 1px solid var(--line); box-shadow: var(--dock-shadow); padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px)) 16px; }
+  .dock.tucked { visibility: hidden; transform: translateY(110%); }
+  .dock-guide { margin: 0 0 6px; font-size: 14px; color: var(--ink); font-weight: 600; }
+  .dock-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .dock-close { width: 44px; height: 44px; flex: none; border: 0; border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+  .dock-close:hover { background: var(--soft); color: var(--ink); }
+  .dock .btn { flex: 1 1 auto; min-width: 0; }
+  body.has-dock { padding-bottom: 96px; }
+}
+:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+  .task, .btn, .mini { transition: background-color .12s, border-color .12s, box-shadow .12s; }
+  .dock { transition: transform .18s ease-out, visibility .18s; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top-of-page" aria-label="CareerPilot home">
+      <span class="mark"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></span>
+      CareerPilot
+    </a>
+    <nav aria-label="Sections">
+      <a href="#guides">Guides</a>
+      <a href="#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero" id="top-of-page">
+  <div class="wrap">
+    <div class="hero-text">
+      <h1>Your AI-powered co-pilot for every stage of your career.</h1>
+      <p class="subline">Free, step-by-step help to find and get your next job. No AI skills needed.</p>
+    </div>
+    <div class="art">
+      <img src="assets/hero.png" width="796" height="600" alt="A woman at a desk with a laptop and a compass. A winding path leads up some steps to an open door.">
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+<main>
+  <section class="welcome" id="welcome" aria-labelledby="h-welcome" hidden>
+    <h2 id="h-welcome">Before you start, two quick questions</h2>
+    <p class="small">These are optional. Your answers go only to the developer of this site, to see who it is helping and to follow up if you leave a way to reach you. Nothing else you do on this site is saved.</p>
+    <form id="welcome-form" novalidate>
+      <fieldset>
+        <legend>Were you affected by a recent company closure?</legend>
+        <div class="radios">
+          <label class="radio" for="w-yes"><input type="radio" name="w-affected" id="w-yes" value="yes"> Yes</label>
+          <label class="radio" for="w-no"><input type="radio" name="w-affected" id="w-no" value="no"> No</label>
+        </div>
+      </fieldset>
+      <div class="grid2">
+        <div class="field"><label for="w-name">Your name <span class="hint">(optional)</span></label><input type="text" id="w-name" maxlength="80" autocomplete="name"></div>
+        <div class="field"><label for="w-dept">Department you worked in</label>
+          <select id="w-dept">
+            <option value="">Choose one</option>
+            <option>Operations</option>
+            <option>Freight audit and claims</option>
+            <option>Billing and finance</option>
+            <option>Customer service</option>
+            <option>Sales and account management</option>
+            <option>Marketing</option>
+            <option>Technology and product</option>
+            <option>Merchandising and supply chain</option>
+            <option>HR and administration</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label for="w-contact">Email or LinkedIn <span class="hint">(optional, only if you are happy to be contacted)</span></label><input type="text" id="w-contact" maxlength="120" autocomplete="email"></div>
+      <div class="hp" aria-hidden="true"><label for="w-site">Leave this empty</label><input type="text" id="w-site" tabindex="-1" autocomplete="off"></div>
+      <div class="row">
+        <button class="btn primary" type="submit" id="w-save">Save and continue</button>
+        <button class="btn ghost" type="button" id="w-skip">Skip</button>
+      </div>
+      <p class="status" id="w-msg" role="status" aria-live="polite"></p>
+    </form>
+    <p id="w-done" hidden></p>
+  </section>
+
+  <section id="guides" aria-labelledby="h-guides">
+    <div class="sec-head">
+      <h2 id="h-guides">Choose a guide</h2>
+    </div>
+
+    <div class="flow">
+      <div class="block">
+        <h3><span class="n">1</span>What do you need help with?</h3>
+        <div class="tasks" id="tasks"></div>
+        <div class="options" id="options">
+          <p class="youpicked" id="picked"><span id="picked-lead">Suggested start:</span> <strong id="picked-title"></strong><button class="linkbtn" id="picked-change" type="button">Change</button></p>
+          <div class="grid2">
+            <div class="field"><label class="muted" for="selA" id="labA"></label><select id="selA"></select></div>
+            <div class="field"><label class="muted" for="selB" id="labB"></label><select id="selB"></select></div>
+          </div>
+          <div class="field" id="other-wrap" hidden><label for="other-text">Your reason, in a few words</label><input type="text" id="other-text" maxlength="160" autocomplete="off"></div>
+          <div class="checks" id="checks"></div>
+        </div>
+      </div>
+
+      <div class="block">
+        <div class="sec-head">
+          <h3><span class="n">2</span>Your prompt is ready</h3>
+          <p class="small">You do not need to read or change it. Claude will ask you questions.</p>
+        </div>
+        <div class="promptbox">
+          <div class="cap"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-6.5L7 20.5V17H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M8 9h8M8 12.5h5"/></svg>Your prompt</div>
+          <pre id="prompt" tabindex="0" aria-label="Your prompt"></pre>
+          <div class="bar" id="bar">
+            <p class="acct">First time? <a href="https://claude.ai" target="_blank" rel="noopener">Make a free Claude account</a> first, then come back to this tab. Claude is a free AI app you type to, like texting.</p>
+            <a class="btn primary" id="openfilled" href="https://claude.ai/new" target="_blank" rel="noopener">Open Claude with this prompt</a>
+            <button class="btn ghost" id="copy" type="button">Copy prompt</button>
+            <p class="acct">Claude opens in a new tab. Add your files there before you send.</p>
+          </div>
+        </div>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </div>
+
+      <div class="block">
+        <h3><span class="n">3</span>Add your files and send</h3>
+        <div id="setup" class="stack"></div>
+
+        <div class="panel">
+          <h4>What to attach or paste</h4>
+          <ul class="attach" id="attach"></ul>
+          <p class="ink">Your files go to Claude, not to this site.</p>
+          <p class="ink"><strong>Before you attach anything, remove:</strong> your SIN or SSN, home address, date of birth, banking details, legal letters, and anything private about a past employer. On a paper resume, cover these before you take the photo.</p>
+        </div>
+
+        <div class="panel">
+          <h4>Steps</h4>
+          <ol class="steps">
+            <li>Tap or click <strong>Open Claude with this prompt</strong>.</li>
+            <li>Tap <strong>+</strong> in Claude to add any files listed above.</li>
+            <li>Send it. Answer Claude's questions in your own words or language.</li>
+            <li>Check every line is true before you use anything.</li>
+          </ol>
+          <details class="more">
+            <summary>Having trouble?</summary>
+            <ul class="tips">
+              <li>Opened this page from Facebook or a text? Tap the three dots, then Open in browser.</li>
+              <li>To get back here, tap the tabs button in your browser and pick CareerPilot.</li>
+              <li>Typing box empty in Claude? Come back, tap Copy prompt, then press and hold in Claude's typing box and tap Paste. On a computer, press Ctrl and V together.</li>
+              <li>After you tap +, choose Photos or Camera for a paper resume or a screenshot, or Files for a saved file.</li>
+              <li>You can tap the microphone on your keyboard and speak instead of typing.</li>
+              <li>Use a new chat for each job you apply to. If Claude says you reached your free limit, wait a few hours and continue in the same chat.</li>
+            </ul>
+          </details>
+          <details class="more">
+            <summary>What will Claude do?</summary>
+            <p id="expect"></p>
+          </details>
+          <details class="more">
+            <summary>If Claude's answer is not right</summary>
+            <p>Send one of these to Claude in the same chat.</p>
+            <div class="follow" id="follow"></div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+</div>
+
+<section class="learn" aria-labelledby="h-learn">
+  <div class="wrap">
+    <div class="learn-card">
+      <div class="learn-text">
+        <h2 id="h-learn">Want to learn basic AI skills?</h2>
+        <p>Take the tutorial or play the game at Claude Co-Worker Academy.</p>
+      </div>
+      <a class="btn ghost learn-btn" href="https://claude-academy.onrender.com/" target="_blank" rel="noopener">Open the Academy</a>
+    </div>
+  </div>
+</section>
+
+<footer class="about" id="about">
+  <div class="wrap">
+    <h2>About CareerPilot</h2>
+    <p>CareerPilot is a free solo project to help anyone build a better career. It is for everyone tired of posts and reels that say "comment or DM to get the prompt". Getting a good prompt should be easy, and free.</p>
+    <div class="dev">
+      <p class="dev-name">Developer: <strong>Imantha Herath</strong></p>
+      <a class="li-btn" href="https://www.linkedin.com/in/imanthah/" target="_blank" rel="noopener" aria-label="Connect with Imantha Herath on LinkedIn (opens in a new tab)">
+        <span class="li-mark" aria-hidden="true">
+          <img src="assets/linkedin.png" alt="" width="26" height="26">
+        </span>
+        Connect on LinkedIn
+      </a>
+    </div>
+    <p class="fine">Claude has its own privacy settings. CareerPilot is not connected with any employer or AI company, and it is not legal, financial or career advice. <span id="about-data" hidden>To have your answers to the optional questions removed, contact the developer on LinkedIn.</span><span id="about-nosave">This site does not save anything you choose.</span></p>
+  </div>
+</footer>
+
+<div class="dock" id="dock" role="region" aria-label="Open your guide in Claude" hidden>
+  <p class="dock-guide" id="dock-guide"></p>
+  <div class="dock-head">
+    <a class="btn primary" id="openfilled2" href="https://claude.ai/new" target="_blank" rel="noopener">Open Claude with this prompt</a>
+    <button class="dock-close" id="dock-close" type="button" aria-label="Hide this bar"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+</div>
+<script src="config.js"></script>
+<script>
+(function () {
+  var TONES = [
+    ["natural", "Natural and professional", "Write in a natural, professional voice that sounds like a real person."],
+    ["warm", "Warm and friendly", "Write in a warm, friendly voice that still sounds professional."],
+    ["direct", "Direct and brief", "Write in a direct, brief voice. Short sentences. No filler."]
+  ];
+  var ROLES = [
+    ["same", "Similar to my past work", "I think this job is similar to work I did before. Tell me if you see it differently."],
+    ["up", "A step up from my last job", "I am applying for a step up from my last role. Show that I am ready for it using only what I have actually done."],
+    ["change", "A different kind of work", "I am moving into a different kind of work. Help me show how my experience carries over, without overstating it."]
+  ];
+  var CLOSURE = "Background: my last employer closed down and every role ended, so I am looking for work through no fault of my own.";
+  var TRUTH =
+    "Rules you must follow:\n" +
+    "1. Use only facts that appear in my attached documents or that I tell you in this chat. Never add or change employers, job titles, dates, numbers, tools, certifications or skills.\n" +
+    "2. If a number or detail would make something stronger but is missing, ask me for it. Do not estimate and do not use placeholders. If I am unsure of a number, leave it out.\n" +
+    "3. If you are not sure something is true, ask me before you use it.";
+  var STYLE = "Use plain language. Avoid buzzwords and cliches. If you use a job term I may not know, explain it in a few plain words.";
+  var NO_RESUME = "I do not have a resume file. Before anything else, ask me about my last two or three jobs (job title, employer and city, start and end month and year, and what I did), then treat my answers as my resume.";
+  var PROFILE_NOTE = "If I also pasted or attached a career profile, use it as extra background about me.";
+
+  function pick(list, key) { for (var i = 0; i < list.length; i++) if (list[i][0] === key) return list[i][2]; return ""; }
+  function join(parts) { return parts.filter(Boolean).join("\n\n"); }
+
+  var DOCS = {
+    resume: { name: "Your resume", how: "Use your most recent resume as a Word or PDF file. An older one is fine. If it is only on paper, take a clear photo of each page. If you have no resume at all, remove the tick from I have a resume above and Claude will ask about your jobs instead." },
+    posting: { name: "The job posting", how: "Easiest way: take screenshots of the whole posting and add them in the chat. Or copy the text of the posting and paste it under your prompt. If you copy the text, paste your prompt into Claude first, so you do not lose it." },
+    linkedin: { name: "Your LinkedIn profile as a PDF", how: "On a computer, open your LinkedIn profile, select Resources (on some accounts it is called More), then Save to PDF. If you cannot find it, skip this file. The rest still works." },
+    profile: { name: "Your career profile (optional)", how: "This is the profile Claude writes when you use Build my career profile. If you emailed it to yourself, copy it from that email and paste it into the chat under your prompt. If you have not made one yet, skip it." }
+  };
+
+  var TASKS = {
+    profile: {
+      title: "Build my career profile", sub: "Answer a few questions about your work", tag: "Start here",
+      a: { label: "Where you are right now", opts: [
+        ["know", "I know the job I want", "I know the kind of job I want. Help me sharpen how I present myself for it."],
+        ["open", "I am open to options", "I am open to options. Help me find the roles that fit my experience best, including ones I may not have thought of."],
+        ["change", "I want a new field", "I want to move into a different field. Help me find realistic paths and be honest about what I would need to learn."]
+      ] },
+      b: { label: "How many questions", opts: [["quick", "Quick, up to 10 questions"], ["full", "Full, up to 16 questions"]] },
+      checks: [["resume", "I have a resume (a file, a photo, or a paper copy)", true], ["linkedin", "I also have my LinkedIn profile as a PDF", false], ["closure", "I am looking because my company closed down", false]],
+      docs: function (s) { return (s.resume ? ["resume"] : []).concat(s.linkedin ? ["linkedin"] : []); },
+      expect: "Claude asks you questions one at a time, like a conversation. Answer in your own words. Short answers are fine. At the end you get a short career profile. To keep it, tap the small copy icon under Claude's answer (or press and hold the text and tap Copy), then email it to yourself. Your chat also stays saved in Claude. Later you can paste it into a new chat so Claude already knows you. If you have no resume, Claude also writes a simple one for you.",
+      follow: ["I am not sure how to answer. Give me a few examples to choose from."],
+      build: function (s) {
+        var att = [];
+        if (s.resume) att.push("my resume");
+        if (s.linkedin) att.push("my LinkedIn profile as a PDF");
+        return join([
+          "Act as an experienced career planner. Interview me so you understand who I am as a worker and what I want next. Then write my career profile. I am not a technical person, so use plain, friendly language.",
+          att.length ? "I have attached " + att.join(" and ") + ". Read it first so you do not ask me things it already answers." : "I have not attached any documents. Start by asking about my last two jobs, one job at a time: job title, type of employer, start and end month and year (a rough guess is fine, mark it as approximate), and the tools I used. Before you write the resume, also ask about my education.",
+          (s.closure ? CLOSURE + " " : "") + pick(TASKS.profile.a.opts, s.a),
+          "How to run the interview:\n" +
+          "- Ask one question at a time and wait for my answer. Keep each question short.\n" +
+          "- Ask up to " + (s.b === "full" ? "16" : "10") + " main questions. Opening questions about my jobs and education do not count. Follow-ups do not count either, but ask no more than 4 of them.\n" +
+          "- Cover: what I did day to day, what I was best at, results I am proud of, what people came to me for, what I enjoy and what drains me, the kind of work and workplace I want next, where I can work and my schedule needs, the pay I need, and anything I will not do.\n" +
+          "- If my answer is vague, ask one follow-up for a real example or a number.\n" +
+          "- Do not assume anything I have not said. If I seem stuck, give me two or three examples to choose from.",
+          TRUTH,
+          "After the interview, write my career profile with these headings. Keep each part short:\n" +
+          "1. Summary: 3 sentences on who I am as a professional.\n" +
+          "2. Top strengths: 3 to 5 strengths, only ones with a real example from my answers or documents. Do not repeat an example within this list.\n" +
+          "3. Proof stories: up to 3 short stories I can reuse in interviews (the situation, what I did, the result). A story can go deeper on an example used above. If I have fewer than 3 real examples, give fewer. If I did not give a result, say so instead of adding one.\n" +
+          "4. Target roles: 5 to 8 job titles that fit me, one line on why for each, and the words to type into job sites to find them.\n" +
+          "5. What I want: location, schedule, pay range and deal-breakers.\n" +
+          "6. Gaps to be honest about, with one practical way to close each.\n" +
+          "7. My 30-second introduction, written the way I would say it out loud." +
+          (s.resume ? "" : "\n8. A simple one-page resume built only from my answers, because I do not have one."),
+          "Then ask me if anything is wrong or missing and fix it. When I say it is right, tell me to copy the profile and email it to myself, so I can paste it into future chats." + (s.resume ? "" : " Then tell me what to add to the resume myself (my name, phone, email and each employer's name) and step by step how to copy it into Word or Google Docs and save it as a PDF, on a phone and on a computer."),
+          STYLE
+        ]);
+      }
+    },
+    canada: {
+      title: "Make a one-page Canadian resume", sub: "Clean Harvard-style format Canadian employers expect",
+      a: { label: "Your work experience", opts: [
+        ["under5", "Less than 5 years", "I have less than 5 years of work experience."],
+        ["mid", "5 to 15 years", "I have about 5 to 15 years of work experience. Focus on the most recent and relevant 10 years."],
+        ["over15", "More than 15 years", "I have more than 15 years of work experience. Focus on the last 10 to 15 years and sum up older jobs in one short line."]
+      ] },
+      b: { label: "The jobs you want", opts: [
+        ["same", "Similar to my past work", "I want jobs similar to work I did before."],
+        ["up", "A step up from my last job", "I want a step up from my last job. Show that I am ready for it using only what I have actually done."],
+        ["change", "A different kind of work", "I want to move into a different kind of work. Show how my experience carries over, without overstating it."]
+      ] },
+      checks: [["resume", "I have a resume (a file, a photo, or a paper copy)", true], ["linkedin", "I also have my LinkedIn profile as a PDF", false]],
+      docs: function (s) { return (s.resume ? ["resume"] : []).concat(s.linkedin ? ["linkedin"] : []).concat(["profile"]); },
+      expect: "Claude asks you a few short questions about missing details, then writes a one-page resume in a clean Canadian format. At the end it tells you how to save it as a PDF and a Word file. Check every line is true before you use it.",
+      follow: ["It is longer than one page. Make it fit on one page without removing my most recent job."],
+      build: function (s) {
+        return join([
+          "Rewrite my resume as a clean, one-page Canadian resume in the Harvard style. I am applying for jobs in Canada. " +
+            (s.resume ? "I have attached my resume." : NO_RESUME + (s.b === "change" ? " Also ask me what kind of work I want to move into and about my education." : "")) + (s.linkedin ? " If I attached my LinkedIn profile as a PDF, use it too. If you cannot see it, go by my answers." : "") + " " + PROFILE_NOTE,
+          pick(TASKS.canada.a.opts, s.a) + " " + pick(TASKS.canada.b.opts, s.b),
+          TRUTH,
+          "Step 1: Before you write, ask me up to 5 short questions in one message about details that would make the resume stronger, such as results with numbers, tools I used, certifications or volunteer work. Also ask for any contact details that are missing. Leave out anything I do not have. Wait for my answers.",
+          "Step 2: Write the resume with these rules.\n" +
+          "Layout (Harvard style):\n" +
+          "- One page. One column. No tables, text boxes, columns, graphics, photos, icons or colours, so hiring software can read it.\n" +
+          "- My name at the top. Under it, one line with my city and province, phone, email and LinkedIn link. Keep this in the main page, not in a header or footer.\n" +
+          "- Plain section headings in this order: Summary (2 or 3 lines), Experience, Education, Skills. Add Certifications or Volunteer Experience only if I have them.\n" +
+          "- Experience newest first. For each job: employer and city on one line with the dates at the right, then the job title on the next line.\n" +
+          "- Write every job date as month and year (for example, March 2024). For school, or if I do not know the month, use the year alone.\n" +
+          "- 3 to 5 bullets for recent jobs, fewer for older ones. Start each bullet with an action verb and end with the result where I gave one.\n" +
+          "Canadian rules:\n" +
+          "- Use Canadian spelling, for example colour, centre and labour.\n" +
+          "- Do not include a photo, my age or date of birth, marital status, SIN, religion, nationality, immigration status or full street address.\n" +
+          "- Do not add \"References available upon request\".",
+          "Step 3: After the resume, give me:\n" +
+          "- A short list of what you changed and why, and anything you left out to fit one page.\n" +
+          "- Step by step, how to copy it into Word or Google Docs, use a simple font such as Arial or Calibri at 10.5 to 11 point, and save it as a PDF and a Word file, on a phone and on a computer. Do not describe buttons in this app unless you are sure they exist. If you can create a Word file for me directly, offer it.",
+          STYLE
+        ]);
+      }
+    },
+    jobs: {
+      title: "Find jobs and check them", sub: "New postings, how well you fit, warning signs",
+      a: { label: "How Claude searches", opts: [["web", "Simple: web search"], ["apify", "Advanced: Apify (most skip)"]] },
+      b: { label: "How often", opts: [["manual", "When I ask"], ["daily", "Daily (paid plan)"], ["weekly", "Weekly (paid plan)"]] },
+      checks: [["resume", "I have a resume (a file, a photo, or a paper copy)", true], ["remote", "Include remote jobs", true]],
+      docs: function (s) { return (s.resume ? ["resume"] : []).concat(["profile"]); },
+      expect: "Claude asks a few questions, then searches and gives you a short list. For each job it says how well you fit, whether to apply, and any warning signs. Be ready for a short list: a web search misses many jobs and often cannot see when a job was posted. Use this next to your own search on the big job sites, not instead of it. Always open the link and confirm the job on the employer's own website before you apply or share personal details.",
+      follow: ["Check again. Only show jobs you have not shown me before.", "Look more closely at the first job. Is the employer real and is the posting genuine?", "I found this job myself. Check it the same way. I will paste the posting next."],
+      setup: function (s) {
+        var out = [];
+        if (s.a === "apify") out.push({
+          title: "One-time setup for the Apify add-on",
+          intro: "You do not need this. Apify is a separate service that can pull listings from job sites. Claude calls add-ons like this connectors. Setup takes about 10 minutes and is best done on a computer, not a phone. If you are unsure, choose Simple instead.",
+          steps: [
+            "Create a free account at apify.com.",
+            "In Claude, open Settings (on some screens it is called Customize), then Connectors.",
+            "Search for Apify and connect it. If it is not listed, choose Add custom connector and enter https://mcp.apify.com as the address.",
+            "Sign in to Apify when asked and allow access. This lets Claude run Apify searches for you. It does not give Apify your resume.",
+            "Come back here, copy the prompt and send it in a new chat."
+          ],
+          note: "Cost: the free Claude plan allows one custom connector, and the free Apify plan includes a limited amount of usage each month. The prompt tells Claude to check with you before it uses any the first time. If you choose daily or weekly runs, later runs use it without asking. Do not add a payment card to Apify unless you decide to. Without one you cannot be charged. You can remove the connector in the same Connectors screen at any time."
+        });
+        if (s.b !== "manual") out.push({
+          title: "About automatic " + (s.b === "daily" ? "daily" : "weekly") + " alerts",
+          intro: "Automatic runs use a Claude feature called scheduled tasks. It needs a paid Claude plan. See claude.com/pricing for the current price. Afterwards, check that the task appears in Claude under Scheduled. If it does not, ask Claude again. Each run shows up there too. On the free plan, choose When I ask instead. Then open the same chat whenever you want a fresh list and send: Check again. Only show jobs you have not shown me before.",
+          steps: [], note: ""
+        });
+        return out;
+      },
+      build: function (s) {
+        var sched = s.b !== "manual";
+        var search = s.a === "apify"
+          ? "Then search using my Apify connector:\n" +
+            "- Before the first search, tell me in plain words which Apify tool you plan to use and whether it will use my Apify credits. Wait for my OK." + (sched ? " After I say OK once, later scheduled runs may repeat the same search without asking again.\n" : "\n") +
+            "- Keep each search to 25 results or fewer.\n" +
+            "- If the connector is missing or fails, tell me, use your normal web search instead, and warn me that a web search misses many jobs and often cannot show posting dates."
+          : "Then search the web for job postings that are still open. If you cannot confirm a job is still open, write \"could not confirm it is open\". Check employers' own careers pages as well as job boards. Tell me up front that a web search misses many jobs and often cannot show posting dates, so I should also search the big job sites myself (such as Indeed, LinkedIn, and Job Bank in Canada).";
+        var schedLine = !sched ? ""
+          : "After this first list, set this up as a scheduled task that runs " + (s.b === "daily" ? "every morning" : "every Monday morning") + ". Write my answers, a short summary of my background and the jobs already shown into the task, so each run works without asking me anything. Each run should leave out the jobs written into the task and show only jobs posted in the last 7 days, in the same format. If a date is not shown, include the job and say it may be a repeat. If you cannot create a scheduled task on my plan, tell me plainly and I will ask you again myself.";
+        return join([
+          "Act as my job search assistant. Find current job postings that fit me, check whether each one is genuine, and tell me which are worth applying to. " + (s.resume ? "I have attached my resume." : NO_RESUME) + " " + PROFILE_NOTE + " I am not a technical person, so use plain language.",
+          (s.remote ? "Include remote jobs I am allowed to do from where I live." : "Only include jobs I can travel to. Leave out remote-only jobs.") +
+          " First, ask me these questions together in one short message, unless my documents already answer them: the job titles I want, my city and how far I can travel, the lowest pay I would accept, and anything I will not do. Wait for my answers.",
+          search,
+          "Rules you must follow:\n" +
+          "1. Only list jobs that came from this search, and open each link before you list it. Never invent a job, an employer, a pay figure or a link.\n" +
+          "2. Put any posting you could not open in a separate short list called \"Could not check\", with its link.\n" +
+          "3. If the posting date is not shown, write \"date not shown\". Leave out postings that are closed or clearly more than 30 days old.\n" +
+          "4. Leave out a job only if its top pay is below my lowest pay. If pay is hourly, show it as hourly and say roughly what that is per year at 40 hours a week.\n" +
+          "5. Base the fit only on my documents and my answers. Do not assume skills I have not mentioned.\n" +
+          "6. Write \"could not check\" for anything you cannot see. Do not guess.",
+          "Show me up to 5 jobs, best fit first. For each job give:\n" +
+          "- Job title, employer, location, pay if shown, date posted, and the link.\n" +
+          "- Posted by: the employer directly, a recruiting or staffing agency, or a job board copy of another posting. If it is a copy, look for the original on the employer's own careers page and give me that link too.\n" +
+          "- Fit: a percentage, the 3 main reasons, and what I am missing. Say that this is your estimate.\n" +
+          "- Should I apply: Apply, Maybe or Skip, with one sentence why.\n" +
+          "- Warning signs: check for requests for money, banking details or my SIN or SSN before a written offer, pay far above normal for the role, no real company website or address, a personal email address instead of a company one, interviews only by text or chat app, vague duties, and pressure to act fast. A staffing agency not naming its client is normal, so say so and do not count it as a warning sign. Write \"None found\" if it is clean.",
+          "If few or no jobs fit, say so plainly. Then give me 5 search phrases and 3 job sites to try myself.",
+          "End with the jobs I should apply to first, up to 3, and why. Remind me that you cannot fully verify an employer, so I should confirm each job on the employer's own website before I share personal details.",
+          schedLine
+        ]);
+      }
+    },
+    resume: {
+      title: "Fit my resume to a job", sub: "Match it to one job posting",
+      a: { label: "The job is", opts: ROLES },
+      b: { label: "What you want back", opts: [["full", "Check and rewrite"], ["check", "Check only"]] },
+      checks: [["resume", "I have a resume (a file, a photo, or a paper copy)", true], ["linkedin", "I also have my LinkedIn profile as a PDF", false], ["closure", "I am looking because my company closed down", false]],
+      docs: function (s) { return (s.resume ? ["resume"] : []).concat(["posting"]).concat(s.linkedin ? ["linkedin"] : []).concat(["profile"]); },
+      expect: "Claude first shows how well your resume matches the job and asks you a few questions about the gaps. It only rewrites after you answer. The match is an estimate, not a score from the software employers use to sort applications. At the end Claude tells you how to save the new resume as a file.",
+      follow: [],
+      build: function (s) {
+        var step2 = s.b === "check"
+          ? "Step 2: Advice only. After I reply, do not rewrite my resume. Give me the 5 changes that would help most, in order."
+          : "Step 2: Rewrite. Only after I reply. If one of my answers is unsure or partial, such as \"a little\" or \"I think\", describe that skill at the level I said, for example \"basic pivot tables\", or ask one follow-up first.\n" +
+            "- Rewrite my resume for this job. Use the posting's wording only where my experience supports it.\n" +
+            "- Keep my job titles, employers and dates exactly as written.\n" +
+            "- Use a simple one-column layout with no tables, graphics or text boxes, so hiring software can read it.\n" +
+            "- Keep it to one page, or two if my resume is already longer. Do not pad it.\n" +
+            "- Follow Canadian resume norms: Canadian spelling, and no photo, date of birth, SIN or full street address.\n" +
+            "- End with a short list of what you changed and why.\n" +
+            "- Then tell me, step by step, how to copy it into Word or Google Docs and save it as a PDF, on a phone and on a computer. Do not describe buttons in this app unless you are sure they exist. Also tell me what to check before I send it.";
+        return join([
+          "I need help tailoring my resume to one specific job. " + (s.resume ? "I have attached my resume and the job posting" : "I have attached or pasted the job posting") + (s.linkedin ? ", plus my LinkedIn profile as a PDF for extra detail." : ".") + (s.resume ? "" : " " + NO_RESUME) + " " + PROFILE_NOTE,
+          (s.closure ? CLOSURE + " " : "") + pick(ROLES, s.a),
+          TRUTH,
+          "Step 1: Match check. Do this first and do not rewrite anything yet.\n" +
+          "- List the 6 to 8 most important requirements from the job posting. Only real requirements, not pay or location. Explain any job term in a few plain words. Do not use a table.\n" +
+          "- Mark each one Strong, Partial or Missing. Quote the line from my resume that supports your rating, or write \"nothing in your resume\".\n" +
+          "- Give an overall rating: Strong match, Partial match or Weak match. Tell me plainly if this job is a poor fit.\n" +
+          "- Split the gaps into two lists: things I may have done but did not write down, and real gaps.\n" +
+          "- Remind me that this is your estimate and not a real score from an employer's hiring software (an applicant tracking system), because each employer's system is private.\n" +
+          "- Last, ask me about the 5 most important possible gaps, as numbered questions I can answer in a few words.\n" +
+          "Then stop and wait for my answers.",
+          step2,
+          STYLE
+        ]);
+      }
+    },
+    ats: {
+      title: "Check my resume for ATS", sub: "Will hiring software read it? Get a score and fixes",
+      a: { label: "Check against", opts: [["posting", "A job posting I have"], ["general", "No posting, general check"]] },
+      b: { label: "What you want back", opts: [["check", "Score and fix list"], ["fix", "Score, fixes and a fixed version"]] },
+      checks: [["pdf", "My resume is a PDF file (remove the check if it is a Word file)", true]],
+      docs: function (s) { return ["resume"].concat(s.a === "posting" ? ["posting"] : []); },
+      expect: "Claude gives your resume a score out of 100 and a list of fixes, most important first. The score is Claude's estimate, not a real score from an employer's hiring software. It also shows you a simple test you can do yourself.",
+      follow: ["Explain the first fix step by step. I am not good with computers."],
+      build: function (s) {
+        var post = s.a === "posting";
+        return join([
+          "Act as a reviewer of applicant tracking systems (ATS), the hiring software many Canadian employers use. Check how well this software is likely to read my resume" + (post ? " and how well my resume matches the job posting I attached or pasted. If you cannot see the posting, ask me for it." : ".") + " I have attached my resume. " +
+            (s.pdf ? "It is a PDF. Check that it is real text and not a scanned picture of text." : "It is a Word file."),
+          "Be honest about your limits. You are not a real ATS. Every employer uses different software and settings, so your score is an estimate, not a real ATS score. If you cannot tell something from the file, for example how the page looks, say so instead of guessing.",
+          TRUTH + "\n4. Never tell me to add a keyword or skill I do not have. If I am missing one, call it a gap.",
+          "Score my resume out of 100 with this scale. Show the points for each part and one line on why:\n" +
+          "- Easy for software to read (30): one column; no tables, text boxes, columns, images or icons; contact details not in a header or footer; real text.\n" +
+          "- Standard section headings (15): such as Summary, Experience, Education and Skills.\n" +
+          "- Contact details (10): name, city and province, phone, email and LinkedIn.\n" +
+          "- Dates and job titles (10): one date format everywhere and clear job titles.\n" +
+          (post
+            ? "- Match with the posting (35): list the 10 to 15 most important skills and keywords in the posting and mark each one Found, Partly found or Missing, quoting where it appears in my resume. Each keyword is worth 35 divided by the number you list. Found = full points, Partly found = half, Missing = 0. Round the total to the nearest whole point and show the arithmetic. Explain any job term in a few plain words."
+            : "- Strong, clear content (35): bullets that start with action verbs and show results, no long paragraphs, one to two pages.") +
+          "\nIf you cannot judge a part from the file, say so, give that part no score, and give my total out of the points you could judge. Show the sum.",
+          "Then give an overall result: Ready, Needs small fixes, or Needs big fixes. Also flag anything Canadian employers do not expect on a resume, such as a photo, date of birth, marital status, SIN or full street address.",
+          "Then list the fixes, most important first, in plain words. " +
+            (s.b === "fix"
+              ? "Ask me about anything missing before you rewrite, and wait for my answers. Then give me a fixed version in one column with plain headings, using only true facts, and tell me step by step how to save it as a PDF and a Word file, on a phone and on a computer. Do not describe buttons in this app unless you are sure they exist."
+              : "Do not rewrite my resume."),
+          "Last, teach me this simple test: copy all the text from my resume file and paste it into a plain note. If words come out jumbled, joined together or missing, hiring software may have the same trouble.",
+          STYLE
+        ]);
+      }
+    },
+    cover: {
+      title: "Write a cover letter", sub: "For one job posting",
+      a: { label: "The job is", opts: ROLES },
+      b: { label: "Tone", opts: TONES },
+      checks: [["resume", "I have a resume (a file, a photo, or a paper copy)", true], ["mention", "Mention in the letter that my company closed down", false], ["linkedin", "I also have my LinkedIn profile as a PDF", false]],
+      docs: function (s) { return (s.resume ? ["resume"] : []).concat(["posting"]).concat(s.linkedin ? ["linkedin"] : []).concat(["profile"]); },
+      expect: "Claude asks you two or three short questions first, then writes one letter. Treat it as a first draft and change anything that does not sound like you.",
+      follow: [],
+      build: function (s) {
+        return join([
+          "I need a cover letter for one specific job. " + (s.resume ? "I have attached my resume and the job posting" : "I have attached or pasted the job posting") + (s.linkedin ? ", plus my LinkedIn profile as a PDF for extra detail." : ".") + (s.resume ? "" : " " + NO_RESUME) + " " + PROFILE_NOTE,
+          pick(ROLES, s.a),
+          TRUTH,
+          "Before you write, ask me 3 short questions in one message: why this employer interests me, what I am proudest of in my work, and anything else you need. Wait for my answers. If an answer is vague, ask one follow-up for a real example.",
+          "Then write one cover letter:\n" +
+          "- Under 300 words, 3 or 4 short paragraphs.\n" +
+          "- Open with why I fit this role. Do not open with \"I am writing to apply\".\n" +
+          "- Pick the 2 or 3 requirements from the posting that I match best and back each one with a real example from my resume or my answers.\n" +
+          (s.mention
+            ? "- Include one short, neutral sentence saying my last employer closed down and every role ended. No apology and no blame.\n"
+            : "- Do not mention why I left my last job.\n") +
+          "- End with a simple, confident closing line.",
+          pick(TONES, s.b) + " Use Canadian spelling. " + STYLE,
+          "After the letter, list any sentence I should double check for accuracy. Then tell me what to add myself (name, date, contact details) and, step by step, how to copy it into Word or Google Docs and save it as a PDF, on a phone and on a computer. Do not describe buttons in this app unless you are sure they exist."
+        ]);
+      }
+    },
+    interview: {
+      title: "Prepare for an interview", sub: "Likely questions and your answers",
+      a: { label: "Type of interview", opts: [
+        ["phone", "First phone or video call", "It is a first phone or video call with a recruiter. Focus on my background, why I want this job, pay expectations and availability."],
+        ["behav", "\"Tell me about a time\"", "It is a behavioural interview with \"tell me about a time\" questions. Focus on real examples from my work."],
+        ["panel", "Final or panel interview", "It is a final round or an interview with several people at once. Include harder questions about judgment, leadership and how I handle problems."],
+        ["unsure", "Not sure yet", "I do not know the format yet, so cover a mix of recruiter, behavioural and role-specific questions."]
+      ] },
+      b: { label: "How to prepare", opts: [["mock", "One question at a time"], ["list", "List of questions and notes"]] },
+      checks: [["resume", "I have a resume (a file, a photo, or a paper copy)", true], ["posting", "I have the job posting", true], ["closure", "I am looking because my company closed down", false]],
+      docs: function (s) { return (s.resume ? ["resume"] : []).concat(s.posting ? ["posting"] : []).concat(["profile"]); },
+      expect: "Claude builds your answers from your own work history and asks you for details it is missing. It works a few questions at a time so it is not too much to read. Say the answers out loud a few times. Do not memorise them word for word.",
+      follow: [],
+      build: function (s) {
+        var mode = s.b === "mock"
+          ? "Run a practice interview:\n" +
+            "- Before you start, tell me in one sentence how this will work.\n" +
+            "- Ask me one question at a time and wait for my answer.\n" +
+            "- After each answer, tell me what worked and what to cut. Then show a tighter version in 3 short parts (the situation, what I did, the result) that uses only what I said.\n" +
+            "- Ask at most one follow-up per answer, for example what happened in the end. If I have no example, move to a different question.\n" +
+            "- After question 3, ask if I want to keep going. Ask 6 questions in total, then give me the 3 things to work on most."
+          : "Work in small batches so I can keep up:\n" +
+            "- Start with the 3 questions I am most likely to be asked.\n" +
+            "- For each one, write answer notes as 3 short bullets that I can say in under 2 minutes. For questions about my past work, use the situation, what I did and the result, built from a real example in my resume or my answers. For questions about pay or availability, ask me for my number and dates first, then give me one or two plain sentences.\n" +
+            "- If an example or a result is missing, do not make one up. Ask me up to 3 short questions and wait for my answers.\n" +
+            "- Then ask if I want the next 3. Stop after 9 questions.\n" +
+            "- Finish with 5 good questions I can ask the interviewer.";
+        return join([
+          "I have a job interview coming up and need help preparing. " +
+          (s.resume
+            ? "I have attached my resume" + (s.posting ? " and attached or pasted the job posting. If you cannot see the posting, ask me for the job title and the type of employer." : ". I do not have the job posting, so start by asking me for the job title and the type of employer.")
+            : NO_RESUME + (s.posting ? " I have attached or pasted the job posting. If you cannot see it, ask me for the job title and the type of employer." : " I also do not have the job posting, so ask me for the job title and the type of employer.")) +
+          " " + PROFILE_NOTE,
+          pick(TASKS.interview.a.opts, s.a),
+          TRUTH,
+          mode,
+          s.closure ? CLOSURE + " At the end, also give me a calm, honest answer of 2 or 3 sentences to \"Why did you leave your last job?\" with no apology and no blame, ending on what I want to do next." : "",
+          "When we finish, tell me how to practise before the day: say each answer out loud a few times, and do not memorise it word for word. " + STYLE
+        ]);
+      }
+    },
+    closure: {
+      title: "Explain why I am looking", sub: "A short, honest answer to \"Why are you looking?\"",
+      a: { label: "Why you are looking", opts: [
+        ["cymax", "I worked at Cymax or Freight Club", "I worked at Cymax Group Technologies or Freight Club. The company closed down in October 2026 and every role ended. It had nothing to do with my performance."],
+        ["closed", "My company closed down", "My last employer closed down and every role ended. It had nothing to do with my performance."],
+        ["layoff", "My job was cut in a layoff", "My job ended in a layoff."],
+        ["contract", "My contract or temporary job ended", "My contract or temporary job came to its planned end."],
+        ["change", "I want a change or more growth", "I am looking for a change: more growth or a better fit for what I want to do next."],
+        ["moved", "I moved to a new city", "I moved to a new city and am looking for work here."],
+        ["break", "I am coming back after a break", "I am coming back to work after a break, for example for family, health or study. I do not want to share more detail than that."],
+        ["other", "Other (type it below)", ""]
+      ] },
+      b: { label: "Where you will use it", opts: [
+        ["interview", "Interview answer", "I need a spoken answer to \"Why did you leave your last job?\" that takes under 30 seconds to say."],
+        ["letter", "Cover letter line", "I need one or two sentences to include in a cover letter."],
+        ["recruiter", "Note or call to a recruiter", "I need a short version for a recruiter, for a message or the start of a call."],
+        ["post", "LinkedIn post", "I need a short LinkedIn post saying I am open to work. Keep it under 120 words."]
+      ] },
+      text: { key: "other", label: "Your reason, in a few words", hint: "For example: my store moved", when: function (s) { return s.a === "other"; } },
+      checks: [["resume", "Attach my resume so it can mention my strengths", false]],
+      docs: function (s) { return s.resume ? ["resume"] : []; },
+      expect: "Claude asks you three short questions, then gives you three versions and says which one it would pick. Choose the one that sounds most like you and change any words that do not.",
+      follow: [],
+      build: function (s) {
+        var reason = s.a === "other"
+          ? (s.other ? "My reason, in my own words: " + s.other + (/[.!?]$/.test(s.other) ? "" : ".") : "I will tell you my reason when you ask.")
+          : pick(TASKS.closure.a.opts, s.a);
+        var past = s.a === "break" ? "what I did before my break" : "my role and how long I was there";
+        return join([
+          "I need help explaining why I am looking for work. " + reason,
+          pick(TASKS.closure.b.opts, s.b),
+          s.resume ? "I have attached my resume. " + TRUTH : "Rules you must follow:\n1. Use only what I tell you in this chat. Never invent details about me, my role or my employer.\n2. If you need a detail, ask me for it.",
+          "First ask me three short questions in one message: " + past + ", one thing I did well, and what kind of work I want next." + (s.a === "other" && !s.other ? " Also ask me why I am looking." : "") + " Wait for my answers.",
+          "Then give me 3 versions. Each one must:\n" +
+          "- State my reason as a plain fact in one sentence. Do not add reasons I did not give.\n" +
+          "- Have no apology, no blame and no negative comments about anyone.\n" +
+          "- Name the employer only if I ask you to.\n" +
+          "- Move quickly to what I did well and what I want to do next.",
+          "Then tell me which version you would pick and why, and remind me to say it out loud 3 times before I use it.",
+          pick(TONES, "natural") + " " + STYLE
+        ]);
+      }
+    }
+  };
+
+  var FOLLOW = [
+    "I do not understand. Say it in simpler words.",
+    "Explain that again in my first language. My first language is:",
+    "Make it shorter.",
+    "That is not accurate. Use only what is in my documents and what I told you.",
+    "Make it sound less formal, more like how I talk.",
+    "Ask me questions about anything you are unsure of before you change it."
+  ];
+
+  var order = ["profile", "canada", "jobs", "resume", "ats", "cover", "interview", "closure"];
+  var STAGE = { profile: "Get ready", canada: "Get ready", ats: "Apply", jobs: "Find", resume: "Apply", cover: "Apply", interview: "Interview", closure: "Interview" };
+  function svg(d) { return '<svg class="i" viewBox="0 0 24 24" aria-hidden="true" focusable="false">' + d + '</svg>'; }
+  var ICONS = {
+    profile: svg('<rect x="4" y="3" width="16" height="18" rx="2.5"/><circle cx="12" cy="10" r="3"/><path d="M7.5 17.5c.8-2 2.5-3 4.5-3s3.7 1 4.5 3"/>'),
+    jobs: svg('<path d="M13 18H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v2.5"/><path d="M7.5 7V5.5A1.5 1.5 0 0 1 9 4h2a1.5 1.5 0 0 1 1.5 1.5V7"/><circle cx="17" cy="16" r="3.25"/><path d="M19.4 18.4l2.1 2.1"/>'),
+    resume: svg('<path d="M11 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6l5 5v2.5"/><path d="M13 3v4a1 1 0 0 0 1 1h4"/><path d="M8.5 12h4M8.5 15.5h2"/><path d="M14.5 20.5l.6-2.6 4.6-4.6a1.4 1.4 0 0 1 2 2l-4.6 4.6z"/>'),
+    cover: svg('<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 7.5l8.5 6 8.5-6"/>'),
+    interview: svg('<path d="M4 4h9a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H8l-3.5 3v-3H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M18 10h2a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-.5v3L16 18h-3a2 2 0 0 1-2-2v-1"/>'),
+    canada: svg('<path d="M7 3h10a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M9 8h6M9 12h6M9 16h3"/><path d="M15 17.5l1.2 1.2 2.3-2.4"/>'),
+    ats: svg('<path d="M13 21H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v3"/><path d="M13 3v5h5"/><circle cx="16.5" cy="16.5" r="3"/><path d="M18.7 18.7L21 21"/>'),
+    closure: svg('<path d="M10 4h7a2 2 0 0 1 2 2v14"/><path d="M7 20h14"/><path d="M2.5 12h9"/><path d="M8.5 9l3 3-3 3"/><circle cx="15.5" cy="12" r=".5"/>')
+  };
+  var DOC_ICON = svg('<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/>');
+  var CHECK = svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>');
+  var CLAUDE_NEW = "https://claude.ai/new?q=";
+  var reduce = false;
+  try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
+  var state = { task: "profile", a: null, b: null };
+  var $ = function (id) { return document.getElementById(id); };
+  if (typeof window !== "undefined") window.__guide = { TASKS: TASKS, order: order };
+
+  function el(tag, attrs, text) {
+    var n = document.createElement(tag);
+    if (attrs) for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (text != null) n.textContent = text;
+    return n;
+  }
+
+  function fillSelect(sel, lab, def) {
+    lab.textContent = def.label;
+    sel.textContent = "";
+    def.opts.forEach(function (o) { sel.appendChild(el("option", { value: o[0] }, o[1])); });
+  }
+
+  function selectTask(key) {
+    var dg = document.getElementById("dock-guide"); if (dg) dg.textContent = "Your guide: " + TASKS[key].title;
+    var t = TASKS[key];
+    state = { task: key, a: t.a.opts[0][0], b: t.b.opts[0][0] };
+    t.checks.forEach(function (c) { state[c[0]] = c[2]; });
+    Array.prototype.forEach.call($("tasks").children, function (b) {
+      b.setAttribute("aria-pressed", b.dataset.key === key ? "true" : "false");
+    });
+    $("picked-title").textContent = t.title;
+    state.other = ""; $("other-text").value = "";
+    if (t.text) { $("other-wrap").querySelector("label").textContent = t.text.label; $("other-text").placeholder = t.text.hint; }
+    fillSelect($("selA"), $("labA"), t.a);
+    fillSelect($("selB"), $("labB"), t.b);
+    var box = $("checks"); box.textContent = "";
+    t.checks.forEach(function (c) {
+      var id = "chk-" + c[0];
+      var lab = el("label", { "class": "check", "for": id });
+      var inp = el("input", { type: "checkbox", id: id });
+      inp.checked = c[2];
+      inp.addEventListener("change", function () { state[c[0]] = inp.checked; render(); });
+      lab.appendChild(inp); lab.appendChild(el("span", null, c[1]));
+      box.appendChild(lab);
+      if (c[0] === "resume" && c[2]) box.appendChild(el("p", { "class": "check-hint" }, "No resume? Remove the check and Claude will ask about your jobs."));
+    });
+    render();
+  }
+
+  function followRow(f) {
+    var row = el("div", { "class": "followrow" });
+    row.appendChild(el("span", null, f));
+    var b = el("button", { type: "button", "class": "mini" }, "Copy");
+    b.addEventListener("click", function () { copyText(f, b, "Copied", "Copy", "Copied. Paste it into the same chat in Claude."); });
+    row.appendChild(b);
+    return row;
+  }
+
+  function render() {
+    var t = TASKS[state.task];
+    $("other-wrap").hidden = !(t.text && t.text.when(state));
+    var msg = t.build(state);
+    $("prompt").textContent = msg;
+    var link = CLAUDE_NEW + encodeURIComponent(msg);
+    $("openfilled").href = link;
+    $("openfilled2").href = link;
+    $("expect").textContent = t.expect;
+
+    var list = $("attach"); list.textContent = "";
+    var docs = t.docs(state);
+    if (!docs.length) list.appendChild(el("li", null, "Nothing to attach for this one. Just send the prompt."));
+    docs.forEach(function (d) {
+      var li = el("li");
+      var lab = el("div", { "class": "doc" });
+      var ic = el("span", { "aria-hidden": "true" }); ic.innerHTML = DOC_ICON;
+      lab.appendChild(ic.firstChild);
+      lab.appendChild(el("strong", null, DOCS[d].name));
+      var det = el("details");
+      det.appendChild(el("summary", null, d === "profile" ? "What is this?" : "How do I get this?"));
+      det.appendChild(el("p", null, DOCS[d].how));
+      li.appendChild(lab); li.appendChild(det); list.appendChild(li);
+    });
+
+    var setup = $("setup"); setup.textContent = "";
+    (t.setup ? t.setup(state) : []).forEach(function (p) {
+      var panel = el("div", { "class": "panel notice" });
+      panel.appendChild(el("h3", null, p.title));
+      panel.appendChild(el("p", null, p.intro));
+      if (p.steps.length) {
+        var ol = el("ol");
+        p.steps.forEach(function (st) { ol.appendChild(el("li", null, st)); });
+        panel.appendChild(ol);
+      }
+      if (p.note) panel.appendChild(el("p", { "class": "small" }, p.note));
+      setup.appendChild(panel);
+    });
+
+    var fl = $("follow"); fl.textContent = "";
+    (t.follow || []).concat(FOLLOW).forEach(function (f) { fl.appendChild(followRow(f)); });
+  }
+
+  function copyText(text, btn, done, idle, msg) {
+    function ok() {
+      btn.textContent = done;
+      $("status").textContent = msg;
+      setTimeout(function () { btn.textContent = idle; }, 3000);
+    }
+    function fallback() {
+      var ta = el("textarea"); ta.value = text;
+      ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select();
+      var good = false;
+      try { good = document.execCommand("copy"); } catch (e) {}
+      document.body.removeChild(ta);
+      if (good) ok();
+      else $("status").textContent = "Copy did not work on this device. Press and hold the prompt, choose Select all, then Copy.";
+    }
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(ok, fallback);
+      else fallback();
+    } catch (e) { fallback(); }
+  }
+
+  order.forEach(function (key) {
+    var t = TASKS[key];
+    var b = el("button", { type: "button", "class": "task", "aria-pressed": "false" });
+    b.dataset.key = key;
+    var tile = el("span", { "class": "tile", "aria-hidden": "true" });
+    tile.innerHTML = ICONS[key];
+    var body = el("span", { "class": "task-body" });
+    var meta = el("span", { "class": "task-meta" });
+    meta.appendChild(el("small", { "class": "stage" }, STAGE[key]));
+    if (t.tag) meta.appendChild(el("em", { "class": "tag" }, t.tag));
+    var picked = el("span", { "class": "picked", "aria-hidden": "true" });
+    picked.innerHTML = CHECK;
+    picked.appendChild(document.createTextNode("Selected"));
+    meta.appendChild(picked);
+    body.appendChild(meta);
+    body.appendChild(el("strong", null, t.title));
+    body.appendChild(el("span", { "class": "sub" }, t.sub));
+    b.appendChild(tile); b.appendChild(body);
+    b.addEventListener("click", function () {
+      $("tasks").classList.add("chosen");
+      var lead = document.getElementById("picked-lead"); if (lead) lead.textContent = "You picked:";
+      selectTask(key);
+      showDock();
+      var o = $("options");
+      if (o && o.scrollIntoView) o.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    });
+    $("tasks").appendChild(b);
+  });
+  $("selA").addEventListener("change", function () { state.a = this.value; render(); });
+  $("selB").addEventListener("change", function () { state.b = this.value; render(); });
+  $("other-text").addEventListener("input", function () { state.other = this.value.replace(/[\u0000-\u001f]/g, " ").trim().slice(0, 160); render(); });
+  $("picked-change").addEventListener("click", function () {
+    var g = $("tasks").previousElementSibling || $("tasks"); if (g && g.scrollIntoView) g.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    var cur = document.querySelector('.task[aria-pressed="true"]');
+    if (cur) { try { cur.focus({ preventScroll: true }); } catch (e) { cur.focus(); } }
+  });
+  $("copy").addEventListener("click", function () { copyText($("prompt").textContent, this, "Copied", "Copy prompt", "Copied. Now open Claude and paste it."); });
+
+  /* Phone-only bar. It shows after a guide card is tapped, and steps aside while the prompt,
+     its buttons or the welcome questions are on screen. */
+  function showDock() { $("dock").hidden = false; document.body.classList.add("has-dock"); }
+  $("dock-close").addEventListener("click", function () { $("dock").hidden = true; document.body.classList.remove("has-dock"); });
+  if (typeof IntersectionObserver !== "undefined") {
+    var onScreen = {};
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { onScreen[e.target.id] = e.isIntersecting; });
+      $("dock").classList.toggle("tucked", !!(onScreen.bar || onScreen.prompt || onScreen.welcome));
+    });
+    io.observe($("bar")); io.observe($("prompt")); io.observe($("welcome"));
+  }
+
+  selectTask("profile");
+
+  /* ---------- Optional welcome questions ----------
+     Storage, in order: (1) CONFIG.intakeUrl on a public host, (2) the page database when hosted on Claude.
+     If neither can save, the card never shows. */
+  var CONFIG = { intakeUrl: "" };
+  try { var ext = window.CAREERPILOT_CONFIG || {}; if (ext.intakeUrl) CONFIG.intakeUrl = String(ext.intakeUrl); } catch (e) {}
+  var DONE_KEY = "careerpilot-welcome-done";
+  function isDone() { try { return localStorage.getItem(DONE_KEY) === "1"; } catch (e) { return false; } }
+  function markDone() { try { localStorage.setItem(DONE_KEY, "1"); } catch (e) {} }
+  function clip(v, n) { return String(v == null ? "" : v).replace(/[\u0000-\u001f]/g, " ").trim().slice(0, n); }
+
+  function getStore() {
+    if (CONFIG.intakeUrl) {
+      return Promise.resolve({ save: function (d) {
+        return fetch(CONFIG.intakeUrl, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(d) });
+      } });
+    }
+    if (!(window.claude && typeof window.claude.use === "function")) return Promise.resolve(null);
+    return Promise.all([window.claude.use("db"), window.claude.use("user")]).then(function (r) {
+      var db = r[0], user = r[1];
+      if (!db || !user) return null;
+      return Promise.all([user.id(), user.can("data.write")]).then(function (v) {
+        if (!v[0] || v[1] === false) return null;
+        return { save: function (d) { return db.doc("intake/" + v[0]).set(d); } };
+      });
+    }).catch(function () { return null; });
+  }
+
+  function initWelcome() {
+    var card = $("welcome");
+    if (!card || isDone()) return;
+    getStore().then(function (store) {
+      if (!store) return;
+      card.hidden = false;
+      $("about-data").hidden = false; $("about-nosave").hidden = true;
+      var busy = false;
+      $("welcome-form").addEventListener("submit", function (ev) {
+        ev.preventDefault();
+        if (busy) return;
+        if ($("w-site").value) { finish("Thank you. You are all set."); return; }
+        var aff = document.querySelector('input[name="w-affected"]:checked');
+        var data = {
+          affected: aff ? aff.value : "",
+          name: clip($("w-name").value, 80),
+          department: clip($("w-dept").value, 60),
+          contact: clip($("w-contact").value, 120),
+          at: new Date().toISOString(),
+          v: 1
+        };
+        if (!data.affected && !data.name && !data.department && !data.contact) {
+          $("w-msg").textContent = "Nothing to save yet. Answer at least one question, or tap Skip.";
+          return;
+        }
+        busy = true; $("w-save").disabled = true; $("w-msg").textContent = "Saving...";
+        var timer = setTimeout(function () { fail(); }, 10000);
+        Promise.resolve().then(function () { return store.save(data); }).then(function () {
+          clearTimeout(timer); if (busy) finish("Saved. Thank you. Scroll down to pick a guide.");
+        }, function () { clearTimeout(timer); fail(); });
+      });
+      $("w-skip").addEventListener("click", function () { finish(""); });
+      function fail() {
+        if (!busy) return;
+        busy = false; $("w-save").disabled = false;
+        $("w-msg").textContent = "Your answers could not be saved just now. Try again, or tap Skip. The guides work either way.";
+      }
+      function finish(msg) {
+        busy = false; markDone();
+        if (!msg) { card.hidden = true; return; }
+        $("welcome-form").hidden = true;
+        $("w-done").textContent = msg; $("w-done").hidden = false;
+      }
+    });
+  }
+  if (typeof window !== "undefined") window.__guide.getStore = getStore;
+  initWelcome();
+})();
+</script>
+</body>
+</html>
