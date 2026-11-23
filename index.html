@@ -9,21 +9,24 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 <style>
-/* Layout idea: header, a compact cream hero with the illustration, the guide in three numbered steps,
-   then a navy footer. Navy leads, teal supports, amber is a small accent. All colours are tokens. */
+/* Layout: sticky header, a navy-to-teal hero with the illustration in a floating card, a 3-step stepper,
+   colour-coded guide cards (one calm tint per stage), a chat-style prompt card, then a navy footer.
+   Every colour is a token. The two dark blocks hold the same values. */
 :root {
-  --bg: #f5f8fb;
-  --hero: #fef9ef;
-  --art: #fef9ef;
+  --bg: #f4f7fb;
   --surface: #ffffff;
+  --surface-2: #f6f9fc;
   --field: #ffffff;
   --ink: #12263a;
-  --muted: #4d5d6e;
-  --line: #d3dce6;
+  --muted: #3f4f60;
+  --line: #dde5ee;
   --field-line: #7f93a8;
   --brand: #0a3763;
   --brand-ink: #ffffff;
   --brand-hover: #0e4a85;
+  --link: #0a3763;
+  --focus: #0a3763;
+  --ring: #0a3763;
   --teal: #349d9b;
   --teal-ink: #1a6b69;
   --teal-soft: #e2f2f1;
@@ -31,71 +34,99 @@
   --amber-soft: #fdf0d5;
   --amber-ink: #6b4705;
   --soft: #e9eff6;
+  --sel-bg: #f3f8fd;
+  --hero-bg: #0a3763;
+  --hero-a: #0a3763;
+  --hero-b: #15577a;
+  --hero-c: #349d9b;
+  --hero-glow: rgba(254, 249, 239, 0.20);
+  --hero-ink: #ffffff;
+  --hero-muted: #dfeaf4;
+  --hero-chip: rgba(255, 255, 255, 0.12);
+  --hero-chip-line: rgba(255, 255, 255, 0.30);
+  --art: #fef9ef;
+  --art-pad: 10px;
+  --art-filter: none;
+  --cta-bg: #f5c06a;
+  --cta-ink: #0a3763;
+  --cta-hover: #f8cf8a;
+  --s1-bg: #e4edf8; --s1-ink: #0a3763; --s1-solid: #0a3763;
+  --s2-bg: #dcf1ef; --s2-ink: #155e5c; --s2-solid: #1a7472;
+  --s3-bg: #ece9fb; --s3-ink: #4535a0; --s3-solid: #5546b8;
+  --s4-bg: #fcefd6; --s4-ink: #6b4705; --s4-solid: #a0650a;
+  --bubble: #eef4fa;
+  --bubble-line: #d6e3f0;
+  --glow: rgba(52, 157, 155, 0.30);
   --foot-bg: #0a3763;
   --foot-ink: #ffffff;
-  --foot-muted: #d2deeb;
+  --foot-muted: #e1e9f2;
   --foot-link: #f8cf8a;
   --foot-line: #2a5482;
-  --shadow: 0 1px 2px rgba(10, 55, 99, 0.06), 0 8px 24px rgba(10, 55, 99, 0.07);
+  --foot-ic: #9fd8d6;
+  --li-bg: #ffffff; --li-ink: #0a3763; --li-line: #ffffff; --li-hover: #eaf2fb;
+  --check-on: #0a3763;
+  --shadow: 0 1px 2px rgba(10, 55, 99, 0.06), 0 6px 18px rgba(10, 55, 99, 0.07);
+  --shadow-lg: 0 2px 4px rgba(10, 55, 99, 0.08), 0 16px 36px rgba(10, 55, 99, 0.14);
+  --art-shadow: 0 18px 40px rgba(3, 20, 40, 0.35);
   --dock-shadow: 0 -6px 24px rgba(10, 55, 99, 0.16);
-  --art-pad: 0px;
+  --arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233f4f60' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   --display: "Plus Jakarta Sans", "Segoe UI", Helvetica, Arial, sans-serif;
   --body: "Atkinson Hyperlegible", "Segoe UI", Helvetica, Arial, sans-serif;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #0e1b2c; --hero: #14263c; --art: #1b3150; --surface: #14263c; --field: #101f33;
-    --ink: #f1eee7; --muted: #b0bac6; --line: #2b4562; --field-line: #6f88a5;
-    --brand: #2a6bb3; --brand-ink: #ffffff; --brand-hover: #3171bb; --link: #8fc1ef;
+    --bg: #0e1b2c; --surface: #14263c; --surface-2: #112136; --field: #101f33;
+    --ink: #f1eee7; --muted: #bcc6d1; --line: #2b4562; --field-line: #6f88a5;
+    --brand: #2a6bb3; --brand-ink: #ffffff; --brand-hover: #3171bb; --link: #8fc1ef; --focus: #8fc1ef; --ring: #8fc1ef;
     --teal: #4fb8b5; --teal-ink: #72d1cd; --teal-soft: #133b40;
     --amber: #f5c06a; --amber-soft: #3d2f14; --amber-ink: #f8cf8a;
-    --soft: #1b3150;
-    --foot-bg: #153659; --foot-ink: #ffffff; --foot-muted: #c3d0de; --foot-link: #f8cf8a; --foot-line: #2a4b72;
+    --soft: #1b3150; --sel-bg: #172d48;
+    --hero-bg: #0a2647; --hero-a: #0a2647; --hero-b: #113f5e; --hero-c: #1d6a70; --hero-glow: rgba(143, 193, 239, 0.14);
+    --hero-ink: #ffffff; --hero-muted: #d2deeb; --hero-chip: rgba(255, 255, 255, 0.10); --hero-chip-line: rgba(255, 255, 255, 0.26);
+    --art: #1b3150; --art-pad: 8px; --art-filter: brightness(0.84) sepia(0.1);
+    --cta-bg: #f5c06a; --cta-ink: #0a2647; --cta-hover: #f8cf8a;
+    --s1-bg: #1d3657; --s1-ink: #a9cdf5; --s1-solid: #2a6bb3;
+    --s2-bg: #133b40; --s2-ink: #72d1cd; --s2-solid: #1f7f7d;
+    --s3-bg: #2b2a58; --s3-ink: #c6bcff; --s3-solid: #6656d0;
+    --s4-bg: #3d2f14; --s4-ink: #f8cf8a; --s4-solid: #a0650a;
+    --bubble: #1a3150; --bubble-line: #2b4562; --glow: rgba(143, 193, 239, 0.28);
+    --foot-bg: #153659; --foot-ink: #ffffff; --foot-muted: #d6e0ea; --foot-link: #f8cf8a; --foot-line: #2a4b72; --foot-ic: #72d1cd;
     --li-bg: #1b3a5f; --li-ink: #ffffff; --li-line: #3a5c85; --li-hover: #234a75;
-    --shadow: 0 1px 2px rgba(3, 10, 20, 0.35), 0 8px 24px rgba(3, 10, 20, 0.3);
+    --check-on: #2a6bb3;
+    --shadow: 0 1px 2px rgba(3, 10, 20, 0.35), 0 6px 18px rgba(3, 10, 20, 0.3);
+    --shadow-lg: 0 2px 4px rgba(3, 10, 20, 0.4), 0 16px 36px rgba(3, 10, 20, 0.45);
+    --art-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
     --dock-shadow: 0 -6px 24px rgba(3, 10, 20, 0.55);
-    --art-pad: 6px; --art-filter: brightness(0.84) sepia(0.1);
+    --arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23bcc6d1' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
     color-scheme: dark;
   }
-  :root:not([data-theme="light"]) main a:not(.btn), :root:not([data-theme="light"]) .top nav a:hover, :root:not([data-theme="light"]) .linkbtn, :root:not([data-theme="light"]) summary, :root:not([data-theme="light"]) .mini { color: var(--link); }
-  :root:not([data-theme="light"]) .btn.ghost { color: var(--link); border-color: var(--link); }
-  :root:not([data-theme="light"]) .task:hover, :root:not([data-theme="light"]) .task[aria-pressed="true"] { border-color: var(--link); }
-  :root:not([data-theme="light"]) .task[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--link); }
-  :root:not([data-theme="light"]) :focus-visible { outline-color: var(--link); }
-  :root:not([data-theme="light"]) .about :focus-visible { outline-color: var(--foot-link); }
-  :root:not([data-theme="light"]) .art img { filter: var(--art-filter); }
-  :root:not([data-theme="light"]) .check input[type="checkbox"] { -webkit-appearance: none; appearance: none; background: var(--field); border: 1.5px solid var(--field-line); border-radius: 5px; cursor: pointer; }
-  :root:not([data-theme="light"]) .check input[type="checkbox"]:checked { background: var(--brand) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 16px no-repeat; border-color: var(--link); }
-  :root:not([data-theme="light"]) .about { border-top: 1px solid var(--foot-line); }
-  :root:not([data-theme="light"]) .li-btn, :root:not([data-theme="light"]) .about .li-btn, :root:not([data-theme="light"]) .about .li-btn:visited { background: var(--li-bg); color: var(--li-ink); border-color: var(--li-line); }
-  :root:not([data-theme="light"]) .li-btn:hover, :root:not([data-theme="light"]) .li-btn:focus-visible, :root:not([data-theme="light"]) .about .li-btn:hover, :root:not([data-theme="light"]) .about .li-btn:focus { background: var(--li-hover); color: var(--li-ink); }
 }
 :root[data-theme="dark"] {
-  --bg: #0e1b2c; --hero: #14263c; --art: #1b3150; --surface: #14263c; --field: #101f33;
-  --ink: #f1eee7; --muted: #b0bac6; --line: #2b4562; --field-line: #6f88a5;
-  --brand: #2a6bb3; --brand-ink: #ffffff; --brand-hover: #3171bb; --link: #8fc1ef;
+  --bg: #0e1b2c; --surface: #14263c; --surface-2: #112136; --field: #101f33;
+  --ink: #f1eee7; --muted: #bcc6d1; --line: #2b4562; --field-line: #6f88a5;
+  --brand: #2a6bb3; --brand-ink: #ffffff; --brand-hover: #3171bb; --link: #8fc1ef; --focus: #8fc1ef; --ring: #8fc1ef;
   --teal: #4fb8b5; --teal-ink: #72d1cd; --teal-soft: #133b40;
   --amber: #f5c06a; --amber-soft: #3d2f14; --amber-ink: #f8cf8a;
-  --soft: #1b3150;
-  --foot-bg: #153659; --foot-ink: #ffffff; --foot-muted: #c3d0de; --foot-link: #f8cf8a; --foot-line: #2a4b72;
+  --soft: #1b3150; --sel-bg: #172d48;
+  --hero-bg: #0a2647; --hero-a: #0a2647; --hero-b: #113f5e; --hero-c: #1d6a70; --hero-glow: rgba(143, 193, 239, 0.14);
+  --hero-ink: #ffffff; --hero-muted: #d2deeb; --hero-chip: rgba(255, 255, 255, 0.10); --hero-chip-line: rgba(255, 255, 255, 0.26);
+  --art: #1b3150; --art-pad: 8px; --art-filter: brightness(0.84) sepia(0.1);
+  --cta-bg: #f5c06a; --cta-ink: #0a2647; --cta-hover: #f8cf8a;
+  --s1-bg: #1d3657; --s1-ink: #a9cdf5; --s1-solid: #2a6bb3;
+  --s2-bg: #133b40; --s2-ink: #72d1cd; --s2-solid: #1f7f7d;
+  --s3-bg: #2b2a58; --s3-ink: #c6bcff; --s3-solid: #6656d0;
+  --s4-bg: #3d2f14; --s4-ink: #f8cf8a; --s4-solid: #a0650a;
+  --bubble: #1a3150; --bubble-line: #2b4562; --glow: rgba(143, 193, 239, 0.28);
+  --foot-bg: #153659; --foot-ink: #ffffff; --foot-muted: #d6e0ea; --foot-link: #f8cf8a; --foot-line: #2a4b72; --foot-ic: #72d1cd;
   --li-bg: #1b3a5f; --li-ink: #ffffff; --li-line: #3a5c85; --li-hover: #234a75;
-  --shadow: 0 1px 2px rgba(3, 10, 20, 0.35), 0 8px 24px rgba(3, 10, 20, 0.3);
+  --check-on: #2a6bb3;
+  --shadow: 0 1px 2px rgba(3, 10, 20, 0.35), 0 6px 18px rgba(3, 10, 20, 0.3);
+  --shadow-lg: 0 2px 4px rgba(3, 10, 20, 0.4), 0 16px 36px rgba(3, 10, 20, 0.45);
+  --art-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
   --dock-shadow: 0 -6px 24px rgba(3, 10, 20, 0.55);
-  --art-pad: 6px; --art-filter: brightness(0.84) sepia(0.1);
+  --arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23bcc6d1' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
   color-scheme: dark;
 }
-:root[data-theme="dark"] main a:not(.btn), :root[data-theme="dark"] .top nav a:hover, :root[data-theme="dark"] .linkbtn, :root[data-theme="dark"] summary, :root[data-theme="dark"] .mini { color: var(--link); }
-:root[data-theme="dark"] .btn.ghost { color: var(--link); border-color: var(--link); }
-:root[data-theme="dark"] .task:hover, :root[data-theme="dark"] .task[aria-pressed="true"] { border-color: var(--link); }
-:root[data-theme="dark"] .task[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--link); }
-:root[data-theme="dark"] :focus-visible { outline-color: var(--link); }
-:root[data-theme="dark"] .about :focus-visible { outline-color: var(--foot-link); }
-:root[data-theme="dark"] .art img { filter: var(--art-filter); }
-:root[data-theme="dark"] .check input[type="checkbox"] { -webkit-appearance: none; appearance: none; background: var(--field); border: 1.5px solid var(--field-line); border-radius: 5px; cursor: pointer; }
-:root[data-theme="dark"] .check input[type="checkbox"]:checked { background: var(--brand) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 16px no-repeat; border-color: var(--link); }
-:root[data-theme="dark"] .about { border-top: 1px solid var(--foot-line); }
-:root[data-theme="dark"] .li-btn, :root[data-theme="dark"] .about .li-btn, :root[data-theme="dark"] .about .li-btn:visited { background: var(--li-bg); color: var(--li-ink); border-color: var(--li-line); }
-:root[data-theme="dark"] .li-btn:hover, :root[data-theme="dark"] .li-btn:focus-visible, :root[data-theme="dark"] .about .li-btn:hover, :root[data-theme="dark"] .about .li-btn:focus { background: var(--li-hover); color: var(--li-ink); }
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: 80px; }
 body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.55; }
@@ -103,168 +134,252 @@ body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--b
 .wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
 @media (min-width: 900px) { .wrap { padding: 0 32px; } }
 svg.i { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
 
+/* Header */
 .top { position: sticky; top: 0; z-index: 5; background: var(--surface); border-bottom: 1px solid var(--line); }
 .top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 64px; }
 .brand { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; font-family: var(--display); font-weight: 800; font-size: 20px; color: var(--ink); text-decoration: none; letter-spacing: -0.01em; }
-.brand .mark { width: 36px; height: 36px; border-radius: 10px; background: var(--brand); color: var(--brand-ink); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.brand .mark { width: 36px; height: 36px; border-radius: 11px; background: linear-gradient(135deg, var(--hero-a), var(--hero-c)); color: #ffffff; display: inline-flex; align-items: center; justify-content: center; flex: none; }
 .brand .mark svg { width: 22px; height: 22px; }
 .top nav { display: flex; gap: 2px; }
-.top nav a { color: var(--muted); text-decoration: none; font-size: 16px; font-weight: 700; padding: 10px 12px; min-height: 44px; display: inline-flex; align-items: center; border-radius: 8px; }
-.top nav a:hover { color: var(--brand); background: var(--soft); }
-@media (max-width: 360px) { .top .wrap { padding: 0 14px; gap: 6px; } .brand { font-size: 18px; gap: 8px; } .top nav a { padding: 10px 9px; } }
+.top nav a { color: var(--muted); text-decoration: none; font-size: 16px; font-weight: 700; padding: 10px 12px; min-height: 44px; display: inline-flex; align-items: center; gap: 6px; border-radius: 10px; }
+.top nav a svg { width: 18px; height: 18px; }
+.top nav a:hover { color: var(--link); background: var(--soft); }
+@media (max-width: 360px) { .top .wrap { padding: 0 14px; gap: 6px; } .brand { font-size: 18px; gap: 8px; } .top nav a { padding: 10px 8px; } .top nav a svg { display: none; } }
 
-.hero { background: var(--hero); border-bottom: 1px solid var(--line); }
-.hero .wrap { padding-top: 20px; padding-bottom: 20px; display: grid; gap: 14px; align-items: center; }
-.hero-text { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; min-width: 0; }
-h1 { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 7vw, 48px); line-height: 1.12; margin: 0; text-wrap: balance; letter-spacing: -0.02em; max-width: 18ch; color: var(--ink); }
-.subline { margin: 0; color: var(--ink); max-width: 46ch; font-size: 18px; }
-.art { background: var(--art); padding: var(--art-pad); border-radius: 20px; width: 100%; max-width: 200px; margin: 0 auto; }
-.art img { display: block; width: 100%; max-width: 100%; height: auto; border-radius: 12px; }
+/* Hero */
+.hero { background-color: var(--hero-bg); background-image: radial-gradient(circle at 82% 30%, var(--hero-glow), transparent 42%), radial-gradient(circle at 10% 0%, rgba(255, 255, 255, 0.07), transparent 40%), linear-gradient(160deg, var(--hero-a) 0%, var(--hero-a) 30%, var(--hero-b) 66%, var(--hero-c) 100%); color: var(--hero-ink); }
+.hero .wrap { padding-top: 28px; padding-bottom: 32px; display: grid; gap: 24px; align-items: center; }
+.hero-text { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; min-width: 0; }
+h1 { font-family: var(--display); font-weight: 800; font-size: clamp(30px, 7.4vw, 52px); line-height: 1.1; margin: 0; text-wrap: balance; letter-spacing: -0.02em; max-width: 17ch; color: var(--hero-ink); }
+.subline { margin: 0; color: var(--hero-muted); max-width: 40ch; font-size: 18px; }
+.chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li { display: inline-flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 700; color: var(--hero-ink); background: var(--hero-chip); border: 1px solid var(--hero-chip-line); border-radius: 999px; padding: 5px 12px 5px 9px; }
+.chips svg { width: 18px; height: 18px; }
+.btn.cta { background: var(--cta-bg); color: var(--cta-ink); border-color: var(--cta-bg); min-height: 52px; font-size: 18px; padding: 12px 24px; margin-top: 4px; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18); }
+.btn.cta:hover { background: var(--cta-hover); border-color: var(--cta-hover); }
+.hero :focus-visible { outline-color: #ffffff; }
+.art { background: var(--art); padding: var(--art-pad); border-radius: 20px; width: 100%; max-width: 270px; margin: 0 auto; box-shadow: var(--art-shadow); transform: rotate(-1.5deg); }
+.art img { display: block; width: 100%; max-width: 100%; height: auto; border-radius: 14px; filter: var(--art-filter); }
 @media (min-width: 860px) {
-  .hero .wrap { grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr); gap: 40px; padding-top: 36px; padding-bottom: 36px; }
-  .hero-text { gap: 14px; }
-  .art { max-width: 340px; margin: 0 0 0 auto; }
+  .hero .wrap { grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); gap: 48px; padding-top: 52px; padding-bottom: 56px; }
+  .hero-text { gap: 18px; }
+  .art { max-width: 380px; margin: 0 0 0 auto; }
 }
 
-main { display: flex; flex-direction: column; gap: 44px; padding: 28px 0 56px; }
+/* Main and headings */
+main { display: flex; flex-direction: column; gap: 44px; padding: 32px 0 56px; }
 section, .block { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
 .sec-head { display: flex; flex-direction: column; gap: 6px; }
-h2 { font-family: var(--display); font-weight: 700; font-size: clamp(24px, 4.6vw, 30px); line-height: 1.2; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+h2 { font-family: var(--display); font-weight: 800; font-size: clamp(24px, 4.6vw, 30px); line-height: 1.2; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
 h3 { font-family: var(--display); font-size: 19px; font-weight: 700; line-height: 1.3; margin: 0; display: flex; align-items: center; gap: 12px; }
-h3 .n { font-variant-numeric: tabular-nums; color: var(--brand-ink); background: var(--brand); border-radius: 50%; width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; font-size: 16px; flex: none; }
 h4 { font-family: var(--display); font-size: 17px; font-weight: 700; margin: 0; }
 p { margin: 0; }
 .small { font-size: 16px; color: var(--muted); }
 .ink { color: var(--ink); }
-a { color: var(--brand); text-underline-offset: 2px; }
+a { color: var(--link); text-underline-offset: 2px; }
 
-.tile { width: 48px; height: 48px; border-radius: 12px; background: var(--teal-soft); color: var(--teal-ink); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+/* Stepper */
+.stepper { list-style: none; margin: 0; padding: 14px 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); counter-reset: st; }
+.stepper li { counter-increment: st; position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; font-size: 15px; font-weight: 700; line-height: 1.25; color: var(--muted); min-width: 0; }
+.stepper li + li::before { content: ""; position: absolute; top: 22px; right: calc(50% + 30px); width: calc(100% - 54px); height: 2px; border-radius: 2px; background: var(--line); }
+.st-ic { position: relative; width: 44px; height: 44px; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center; background: var(--soft); color: var(--muted); }
+.st-ic::after { content: counter(st); position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%; font-size: 12px; line-height: 20px; text-align: center; background: var(--surface); color: var(--ink); border: 1.5px solid var(--line); font-family: var(--display); }
+.stepper li.now { color: var(--ink); }
+.stepper li.now .st-ic { background: var(--brand); color: var(--brand-ink); box-shadow: 0 0 0 4px var(--glow); }
+#guides:has(.tasks.chosen) .stepper li:first-child .st-ic { background: var(--teal-soft); color: var(--teal-ink); box-shadow: none; }
+#guides:has(.tasks.chosen) .stepper li:first-child .st-ic::after { content: "\2713"; background: var(--teal-ink); color: var(--surface); border-color: var(--teal-ink); }
+#guides:has(.tasks.chosen) .stepper li:nth-child(2) { color: var(--ink); }
+#guides:has(.tasks.chosen) .stepper li:nth-child(2) .st-ic { background: var(--brand); color: var(--brand-ink); box-shadow: 0 0 0 4px var(--glow); }
+@media (min-width: 700px) {
+  .stepper { padding: 14px 20px; }
+  .stepper li { flex-direction: row; justify-content: center; text-align: left; font-size: 16px; gap: 12px; }
+  .stepper li + li::before { top: 50%; right: auto; left: -18px; width: 24px; }
+}
 
-.welcome { background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--amber); border-radius: 16px; padding: 22px 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow); }
+/* Step headers in each block */
+h3.step { font-size: 21px; }
+.step-ic, .cap-ic { position: relative; }
+.step-ic::after, .cap-ic::after { content: attr(data-n); position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; border-radius: 50%; font-family: var(--display); font-size: 12px; font-weight: 800; line-height: 17px; text-align: center; background: var(--surface); color: var(--ink); border: 1.5px solid var(--line); }
+.step-ic { width: 44px; height: 44px; border-radius: 14px; background: linear-gradient(135deg, var(--hero-a), var(--hero-c)); color: #ffffff; display: inline-flex; align-items: center; justify-content: center; flex: none; box-shadow: 0 4px 12px var(--glow); }
+
+/* Welcome */
+.welcome { background: var(--surface); border: 1px solid var(--line); border-top: 4px solid var(--amber); border-radius: 18px; padding: 22px 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow); }
 .welcome form { display: flex; flex-direction: column; gap: 16px; }
 fieldset { border: 0; margin: 0; padding: 0; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
 legend, .field label { font-size: 16px; font-weight: 700; padding: 0; margin-bottom: 2px; }
 .radios { display: flex; gap: 10px; flex-wrap: wrap; }
-.radio { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--field-line); border-radius: 10px; padding: 10px 18px; min-height: 48px; cursor: pointer; background: var(--field); }
+.radio { display: inline-flex; align-items: center; gap: 10px; border: 1px solid var(--field-line); border-radius: 12px; padding: 10px 18px; min-height: 48px; cursor: pointer; background: var(--field); }
 .radio input { width: 20px; height: 20px; margin: 0; accent-color: var(--brand); }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 @media (max-width: 520px) { .grid2 { grid-template-columns: 1fr; } }
 .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .field .hint { font-size: 15px; color: var(--muted); font-weight: 400; }
-select, input[type="text"] { font: inherit; color: var(--ink); background: var(--field); border: 1px solid var(--field-line); border-radius: 10px; padding: 11px 12px; min-height: 48px; width: 100%; }
+select, input[type="text"] { font: inherit; color: var(--ink); background-color: var(--field); border: 1px solid var(--field-line); border-radius: 12px; padding: 11px 12px; min-height: 48px; width: 100%; }
+select { -webkit-appearance: none; appearance: none; padding-right: 44px; background-image: var(--arrow); background-repeat: no-repeat; background-position: right 12px center; background-size: 20px; cursor: pointer; }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 
-.tasks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-@media (max-width: 900px) { .tasks { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 600px) { .tasks { grid-template-columns: 1fr; gap: 10px; } }
-.task { position: relative; font: inherit; color: inherit; text-align: left; cursor: pointer; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; min-height: 76px; display: flex; align-items: flex-start; gap: 14px; box-shadow: var(--shadow); }
-.task-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
-.task-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; min-height: 24px; }
-.task .stage { font-size: 13px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--teal-ink); }
+/* Guide cards */
+.tasks { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media (min-width: 600px) { .tasks { grid-template-columns: 1fr 1fr; gap: 14px; } }
+@media (min-width: 1024px) { .tasks { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; } }
+.task { --tbg: var(--s1-bg); --tink: var(--s1-ink); --tsolid: var(--s1-solid); position: relative; font: inherit; color: inherit; text-align: left; cursor: pointer; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 16px; min-height: 84px; display: flex; align-items: flex-start; gap: 14px; box-shadow: var(--shadow); }
+.task.st-2 { --tbg: var(--s2-bg); --tink: var(--s2-ink); --tsolid: var(--s2-solid); }
+.task.st-3 { --tbg: var(--s3-bg); --tink: var(--s3-ink); --tsolid: var(--s3-solid); }
+.task.st-4 { --tbg: var(--s4-bg); --tink: var(--s4-ink); --tsolid: var(--s4-solid); }
+.tile { width: 52px; height: 52px; border-radius: 15px; background: var(--tbg); color: var(--tink); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.tile svg.i { width: 28px; height: 28px; }
+.task-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; flex: 1; }
+.task-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-height: 24px; }
+.task .stage { font-size: 13px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--tink); background: var(--tbg); border-radius: 999px; padding: 1px 10px; }
 .task strong { font-family: var(--display); font-weight: 700; font-size: 17px; line-height: 1.3; }
 .task .sub { font-size: 16px; color: var(--muted); line-height: 1.4; }
-.task:hover { border-color: var(--brand); }
-.task[aria-pressed="true"] { border-color: var(--brand); box-shadow: 0 0 0 2px var(--brand); background: var(--soft); }
-.task[aria-pressed="true"] .tile { background: var(--brand); color: var(--brand-ink); }
+.task:hover { border-color: var(--field-line); box-shadow: var(--shadow-lg); }
+.task[aria-pressed="true"] { border-color: var(--ring); background: var(--sel-bg); box-shadow: 0 0 0 2px var(--ring), 0 10px 30px var(--glow); }
+.task[aria-pressed="true"] .tile { background: var(--tsolid); color: #ffffff; }
 .tag { font-style: normal; font-size: 13px; font-weight: 700; color: var(--amber-ink); background: var(--amber-soft); border-radius: 999px; padding: 1px 10px; }
-.picked { display: none; position: absolute; top: -12px; right: 12px; align-items: center; gap: 4px; font-size: 13px; font-weight: 700; color: var(--brand-ink); background: var(--brand); border-radius: 999px; padding: 2px 10px 2px 6px; }
+.picked { display: none; align-items: center; gap: 4px; font-size: 13px; font-weight: 700; color: var(--brand-ink); background: var(--brand); border-radius: 999px; padding: 1px 10px 1px 6px; }
 .picked svg { width: 16px; height: 16px; stroke-width: 2.5; }
 .task[aria-pressed="true"] .picked { display: inline-flex; }
 .tasks:not(.chosen) .task[aria-pressed="true"] .picked { display: none; }
-.tasks:not(.chosen) .task[aria-pressed="true"] { box-shadow: none; border-color: var(--line); background: var(--surface); }
-.tasks:not(.chosen) .task[aria-pressed="true"] .tile { background: var(--teal-soft); color: var(--teal-ink); }
+.tasks:not(.chosen) .task[aria-pressed="true"] { box-shadow: var(--shadow); border-color: var(--line); background: var(--surface); }
+.tasks:not(.chosen) .task[aria-pressed="true"] .tile { background: var(--tbg); color: var(--tink); }
+@media (min-width: 1024px) {
+  .task { flex-direction: column; gap: 12px; padding: 18px; }
+  .tile { width: 56px; height: 56px; }
+}
 
-/* The guide is one full-width column at every size: 1 guide and options, 2 the prompt, 3 files and steps. */
-.flow { display: flex; flex-direction: column; gap: 40px; min-width: 0; }
-.options { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 16px; display: flex; flex-direction: column; gap: 14px; }
+/* Options */
+.flow { display: flex; flex-direction: column; gap: 44px; min-width: 0; }
+.options { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 14px; box-shadow: var(--shadow); }
 .field > label.muted { color: var(--muted); font-size: 16px; }
 .checks { display: flex; flex-direction: column; gap: 2px; }
 .check { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; min-height: 44px; cursor: pointer; }
-.check input { width: 22px; height: 22px; margin: 2px 0 0; flex: none; accent-color: var(--brand); }
-.check-hint { margin: -6px 0 4px 34px; font-size: 15px; color: var(--muted); }
+.check input[type="checkbox"] { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; margin: 1px 0 0; flex: none; background: var(--field); border: 2px solid var(--field-line); border-radius: 7px; cursor: pointer; }
+.check input[type="checkbox"]:checked { background: var(--check-on) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 16px no-repeat; border-color: var(--check-on); }
+.check-hint { margin: -6px 0 4px 36px; font-size: 16px; color: var(--ink); }
 .youpicked { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
-.linkbtn { font: inherit; font-weight: 700; color: var(--brand); background: transparent; border: 0; padding: 0 8px; min-height: 44px; min-width: 44px; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; border-radius: 8px; }
+#picked-lead { color: var(--muted); }
+.linkbtn { font: inherit; font-weight: 700; color: var(--link); background: transparent; border: 0; padding: 0 8px; min-height: 44px; min-width: 44px; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; border-radius: 10px; }
 .linkbtn:hover { background: var(--soft); }
 
-.promptbox { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: var(--shadow); }
-.promptbox .cap { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--line); font-size: 14px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--teal-ink); }
-.promptbox .cap svg { width: 20px; height: 20px; }
-#prompt { margin: 0; padding: 16px; font-family: var(--body); font-size: 16px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 55vh; overflow-y: auto; }
+/* Prompt card */
+.acct { display: flex; align-items: center; gap: 10px; font-size: 16px; color: var(--ink); background: var(--amber-soft); border-radius: 14px; padding: 10px 14px; }
+.acct svg.i { color: var(--amber-ink); }
+.promptbox { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; overflow: clip; box-shadow: var(--shadow-lg); }
+.promptbox .cap { margin: 0; display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); font-family: var(--display); font-size: 17px; font-weight: 700; color: var(--ink); }
+.cap-ic { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--hero-a), var(--hero-c)); color: #ffffff; display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.cap-ic svg.i { width: 20px; height: 20px; }
+.ready { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; font-family: var(--body); font-size: 14px; font-weight: 700; color: var(--teal-ink); background: var(--teal-soft); border-radius: 999px; padding: 2px 10px 2px 7px; }
+.ready svg.i { width: 16px; height: 16px; stroke-width: 2.5; }
+#prompt { margin: 0 14px 14px; padding: 14px 16px; background: var(--bubble); border: 1px solid var(--bubble-line); border-radius: 16px 16px 16px 4px; font-family: var(--body); font-size: 16px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 55vh; overflow-y: auto; }
 @media (min-width: 701px) { #prompt { max-height: 460px; } }
-.bar { display: flex; flex-wrap: wrap; gap: 10px; padding: 14px 16px; border-top: 1px solid var(--line); background: var(--soft); }
-.btn { font: inherit; font-weight: 700; cursor: pointer; border-radius: 10px; min-height: 48px; padding: 11px 22px; border: 2px solid var(--brand); text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
-.bar .btn { flex: 1 1 280px; }
-.bar .acct { flex: 1 1 100%; font-size: 16px; color: var(--ink); }
+@media (max-width: 520px) { #prompt { font-size: 16px; } }
+.bar { display: flex; flex-wrap: wrap; gap: 10px; padding: 4px 14px 12px; }
+.attach-hint { display: flex; align-items: flex-start; gap: 8px; margin: 0; padding: 12px 14px 8px; font-size: 15px; line-height: 1.45; color: var(--ink); }
+.attach-hint svg.i { width: 20px; height: 20px; color: var(--teal-ink); margin-top: 1px; }
+.next-row { display: flex; }
+.btn.next { min-height: 48px; padding: 10px 18px; }
+.btn { font: inherit; font-weight: 700; cursor: pointer; border-radius: 12px; min-height: 48px; padding: 11px 22px; border: 2px solid var(--brand); text-decoration: none; text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 10px; }
+.btn svg.i { width: 20px; height: 20px; stroke-width: 2.2; }
+.bar .btn { flex: 1 1 260px; }
 .bar .btn.primary { min-height: 54px; font-size: 18px; }
 .btn.primary { background: var(--brand); color: var(--brand-ink); }
 .btn.primary:hover { background: var(--brand-hover); border-color: var(--brand-hover); }
-.btn.ghost { background: transparent; color: var(--brand); }
+.btn.ghost { background: transparent; color: var(--link); border-color: var(--link); }
 .btn.ghost:hover { background: var(--soft); }
 .bar .btn.ghost { background: var(--surface); }
+.btn.copy::before, .mini::before { content: ""; width: 20px; height: 20px; flex: none; background: currentColor; -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='11' height='11' rx='2'/%3E%3Cpath d='M5 15h-.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V5'/%3E%3C/svg%3E") center / contain no-repeat; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='11' height='11' rx='2'/%3E%3Cpath d='M5 15h-.5A1.5 1.5 0 0 1 3 13.5v-9A1.5 1.5 0 0 1 4.5 3h9A1.5 1.5 0 0 1 15 4.5V5'/%3E%3C/svg%3E") center / contain no-repeat; }
 .btn[disabled] { opacity: 0.6; cursor: default; }
 .status { font-size: 16px; color: var(--muted); min-height: 1.4em; }
 
-.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 16px; display: flex; flex-direction: column; gap: 12px; }
+/* Files and steps */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 12px; box-shadow: var(--shadow); }
 .stack { display: flex; flex-direction: column; gap: 14px; }
 .stack:empty { display: none; }
 .notice { border-left: 4px solid var(--amber); }
-.attach { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-.attach li { display: flex; flex-direction: column; gap: 2px; }
-.doc { display: flex; gap: 12px; align-items: center; min-height: 36px; padding-top: 6px; }
-.doc svg.i { width: 22px; height: 22px; color: var(--teal-ink); }
-details { margin-left: 34px; font-size: 16px; color: var(--muted); }
+.attach { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.attach li { display: flex; flex-direction: column; gap: 0; }
+.attach details.doc { margin: 0; border-radius: 14px; }
+.attach details.doc > summary { color: var(--ink); gap: 12px; padding: 6px 4px 6px 0; min-height: 52px; }
+.attach details.doc > summary::after { margin-left: auto; color: var(--link); }
+.attach details.doc > p { padding: 0 0 8px 52px; }
+.doc-ic { width: 40px; height: 40px; border-radius: 12px; background: var(--teal-soft); color: var(--teal-ink); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.doc-ic svg.i { width: 22px; height: 22px; }
+details { margin-left: 52px; font-size: 16px; color: var(--muted); }
 details.more { margin-left: 0; border-top: 1px solid var(--line); }
 details.more[open] { padding-bottom: 8px; }
 details.more > * + * { margin-top: 8px; }
 .tips { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 8px; }
-summary { cursor: pointer; color: var(--brand); font-weight: 700; padding: 10px 0; min-height: 48px; display: flex; align-items: center; gap: 10px; list-style: none; }
+summary { cursor: pointer; color: var(--link); font-weight: 700; padding: 8px 0; min-height: 44px; display: flex; align-items: center; gap: 10px; list-style: none; border-radius: 10px; }
 summary::-webkit-details-marker { display: none; }
-summary::before { content: "+"; flex: none; width: 24px; height: 24px; border: 2px solid currentColor; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 18px; line-height: 1; }
-details[open] > summary::before { content: "\2212"; }
-ol { margin: 0; padding-left: 24px; display: flex; flex-direction: column; gap: 10px; }
-ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
+details:not([open]) > :not(summary) { display: none; }
+summary::after { content: ""; flex: none; width: 9px; height: 9px; border-right: 2.5px solid currentColor; border-bottom: 2.5px solid currentColor; transform: rotate(45deg); margin: -4px 4px 0 2px; }
+details[open] > summary::after { transform: rotate(-135deg); margin-top: 4px; }
+details.more > summary { padding: 10px 0; min-height: 52px; }
+details.more > summary::after { margin-left: auto; }
+.sum-ic { width: 32px; height: 32px; border-radius: 10px; background: var(--soft); color: var(--link); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.sum-ic svg.i { width: 20px; height: 20px; }
+.safe { display: flex; flex-direction: column; gap: 10px; padding-top: 12px; border-top: 1px solid var(--line); }
+.safe p { display: flex; gap: 10px; align-items: flex-start; color: var(--ink); }
+.safe svg.i { color: var(--teal-ink); margin-top: 1px; }
+.safe .warn svg.i { color: var(--amber-ink); }
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.steps li { display: flex; align-items: center; gap: 12px; }
+.steps .doc-ic { background: var(--s3-bg); color: var(--s3-ink); }
 .follow { display: flex; flex-direction: column; gap: 8px; }
-.followrow { display: flex; gap: 10px; align-items: center; justify-content: space-between; border: 1px solid var(--line); border-radius: 10px; padding: 8px 8px 8px 14px; font-size: 16px; }
-.mini { font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; color: var(--brand); background: transparent; border: 1px solid var(--field-line); border-radius: 8px; min-height: 44px; padding: 6px 14px; flex: none; }
+.followrow { display: flex; gap: 10px; align-items: center; justify-content: space-between; border: 1px solid var(--line); border-radius: 12px; padding: 8px 8px 8px 14px; font-size: 16px; }
+.mini { font: inherit; font-size: 16px; font-weight: 700; cursor: pointer; color: var(--link); background: transparent; border: 1px solid var(--field-line); border-radius: 10px; min-height: 44px; padding: 6px 12px; flex: none; display: inline-flex; align-items: center; gap: 6px; }
+.mini::before { width: 18px; height: 18px; }
 .mini:hover { background: var(--soft); }
 
-.about { background: var(--foot-bg); color: var(--foot-ink); }
-.about .wrap { padding-top: 44px; padding-bottom: 48px; display: flex; flex-direction: column; gap: 14px; }
-.about p { max-width: 68ch; }
-.about a { color: var(--foot-link); }
-.about :focus-visible { outline-color: var(--foot-link); }
-.learn { padding: 8px 0 40px; }
-.learn-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; }
-.learn-text { display: flex; flex-direction: column; gap: 4px; flex: 1 1 260px; }
+/* Academy */
+.learn { padding: 0 0 48px; }
+.learn .wrap { width: 100%; }
+.learn-card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 20px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px; box-shadow: var(--shadow); }
+.learn-ic { width: 56px; height: 56px; border-radius: 16px; background: var(--s4-bg); color: var(--s4-ink); display: inline-flex; align-items: center; justify-content: center; flex: none; }
+.learn-ic svg.i { width: 30px; height: 30px; }
+.learn-text { display: flex; flex-direction: column; gap: 4px; flex: 1 1 220px; }
 .learn-text h2 { font-size: 20px; margin: 0; }
 .learn-text p { margin: 0; color: var(--ink); }
-.learn-btn { flex: 0 0 auto; }
+.learn-btn { flex: 0 1 auto; max-width: 100%; }
+
+/* Footer */
+.about { background: var(--foot-bg); color: var(--foot-ink); }
+.about .wrap { padding-top: 44px; padding-bottom: 48px; display: flex; flex-direction: column; gap: 16px; }
+.about p { max-width: 64ch; }
+.about a { color: var(--foot-link); }
+.about :focus-visible { outline-color: var(--foot-link); }
 .dev { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
 .dev-name { margin: 0; }
-.li-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 16px 8px 10px; border-radius: 999px; background: #ffffff; color: #0a3763; font-weight: 700; text-decoration: none; border: 1px solid transparent; }
-.about .li-btn, .about .li-btn:hover, .about .li-btn:focus, .about .li-btn:visited { color: #0a3763; }
-.li-btn:hover, .li-btn:focus-visible { background: #eaf2fb; }
+.li-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 8px 16px 8px 10px; border-radius: 999px; background: var(--li-bg); color: var(--li-ink); font-weight: 700; text-decoration: none; border: 1px solid var(--li-line); }
+.about .li-btn, .about .li-btn:visited { color: var(--li-ink); }
+.li-btn:hover, .li-btn:focus-visible { background: var(--li-hover); }
 .li-mark { width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; border-radius: 5px; background: #0a66c2; color: #ffffff; flex: none; overflow: hidden; }
 .li-mark img { width: 26px; height: 26px; display: block; }
-.fine { font-size: 16px; color: var(--foot-muted); border-top: 1px solid var(--foot-line); padding-top: 16px; }
+.fine { list-style: none; margin: 0; padding: 16px 0 0; border-top: 1px solid var(--foot-line); display: flex; flex-direction: column; gap: 8px; font-size: 16px; color: var(--foot-muted); }
+.fine li { display: flex; align-items: flex-start; gap: 10px; }
+.fine svg.i { width: 20px; height: 20px; color: var(--foot-ic); margin-top: 2px; }
 
+/* Phone bar */
 .dock { display: none; }
 @media (max-width: 700px) {
-  .dock { display: block; position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: var(--surface); border-top: 1px solid var(--line); box-shadow: var(--dock-shadow); padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px)) 16px; }
+  .dock { display: block; position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: var(--surface); border-top: 1px solid var(--line); border-radius: 18px 18px 0 0; box-shadow: var(--dock-shadow); padding: 10px 12px calc(10px + env(safe-area-inset-bottom, 0px)) 16px; }
   .dock.tucked { visibility: hidden; transform: translateY(110%); }
-  .dock-guide { margin: 0 0 6px; font-size: 14px; color: var(--ink); font-weight: 600; }
+  .dock-guide { display: none; margin: 0 0 6px; font-size: 15px; color: var(--muted); font-weight: 700; }
   .dock-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .dock-close { width: 44px; height: 44px; flex: none; border: 0; border-radius: 8px; background: transparent; color: var(--muted); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+  .dock-close { width: 44px; height: 44px; flex: none; border: 0; border-radius: 10px; background: transparent; color: var(--muted); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
   .dock-close:hover { background: var(--soft); color: var(--ink); }
-  .dock .btn { flex: 1 1 auto; min-width: 0; }
-  body.has-dock { padding-bottom: 96px; }
+  .dock .btn { flex: 1 1 auto; min-width: 0; padding: 11px 14px; gap: 8px; }
+  body.has-dock .about .wrap { padding-bottom: 136px; }
 }
-:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
-  .task, .btn, .mini { transition: background-color .12s, border-color .12s, box-shadow .12s; }
+  .task, .btn, .mini, .linkbtn, summary, .top nav a, .li-btn, .st-ic { transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease, transform .15s ease, color .15s ease; }
+  .task:hover { transform: translateY(-2px); }
+  .btn.primary:hover, .btn.cta:hover { transform: translateY(-1px); }
   .dock { transition: transform .18s ease-out, visibility .18s; }
 }
 </style>
@@ -277,8 +392,8 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
       CareerPilot
     </a>
     <nav aria-label="Sections">
-      <a href="#guides">Guides</a>
-      <a href="#about">About</a>
+      <a href="#guides"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg>Guides</a>
+      <a href="#about"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6h.01"/></svg>About</a>
     </nav>
   </div>
 </header>
@@ -287,7 +402,13 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
   <div class="wrap">
     <div class="hero-text">
       <h1>Your AI-powered co-pilot for every stage of your career.</h1>
-      <p class="subline">Free, step-by-step help to find and get your next job. No AI skills needed.</p>
+      <p class="subline">Ready-made prompts for your job search.</p>
+      <ul class="chips" aria-label="Why CareerPilot">
+        <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4.5v7.1l9.4 9.4 8.6-8.6L11.6 3H4.5A1.5 1.5 0 0 0 3 4.5z"/><circle cx="7.5" cy="7.5" r="1.3"/></svg>Free</li>
+        <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-6.5L7 20.5V17H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M8 9h8M8 12.5h5"/></svg>Works with Claude, a free AI chat app</li>
+        <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>Built for Canada</li>
+      </ul>
+      <a class="btn cta" href="#guides">Pick a guide<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
     </div>
     <div class="art">
       <img src="assets/hero.png" width="796" height="600" alt="A woman at a desk with a laptop and a compass. A winding path leads up some steps to an open door.">
@@ -339,13 +460,17 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
 
   <section id="guides" aria-labelledby="h-guides">
     <div class="sec-head">
-      <h2 id="h-guides">Choose a guide</h2>
+      <h2 id="h-guides">Three steps</h2>
     </div>
+    <ol class="stepper" aria-label="Steps">
+      <li class="now"><span class="st-ic" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg></span>Pick a guide</li>
+      <li><span class="st-ic" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M12 3l1.8 4.9L19 9.7l-5.2 1.8L12 16.5l-1.8-5L5 9.7l5.2-1.8z"/><path d="M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></svg></span>Get your prompt</li>
+      <li><span class="st-ic" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M21 3L10 14"/><path d="M21 3l-6.5 18-4.5-7-7-4.5z"/></svg></span>Send it in Claude</li>
+    </ol>
 
     <div class="flow">
       <div class="block">
-        <h3><span class="n">1</span>What do you need help with?</h3>
-        <div class="tasks" id="tasks"></div>
+                <div class="tasks" id="tasks"></div>
         <div class="options" id="options">
           <p class="youpicked" id="picked"><span id="picked-lead">Suggested start:</span> <strong id="picked-title"></strong><button class="linkbtn" id="picked-change" type="button">Change</button></p>
           <div class="grid2">
@@ -358,44 +483,40 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
       </div>
 
       <div class="block">
-        <div class="sec-head">
-          <h3><span class="n">2</span>Your prompt is ready</h3>
-          <p class="small">You do not need to read or change it. Claude will ask you questions.</p>
-        </div>
-        <div class="promptbox">
-          <div class="cap"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-6.5L7 20.5V17H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M8 9h8M8 12.5h5"/></svg>Your prompt</div>
-          <pre id="prompt" tabindex="0" aria-label="Your prompt"></pre>
+        <p class="acct"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="8" r="3.5"/><path d="M3.5 19.5c.8-3.3 3.4-5.2 6.5-5.2 1.3 0 2.5.3 3.5 1"/><path d="M18 14v6M15 17h6"/></svg><span>New to Claude? <a href="https://claude.ai" target="_blank" rel="noopener">Make a free account</a>, then come back here.</span></p>
+        <div class="promptbox" id="promptcard">
+          <h3 class="cap" id="h-prompt"><span class="cap-ic" data-n="2" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M6 4h12a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-6.5L7 20.5V17H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M8 9h8M8 12.5h5"/></svg></span>Your prompt</h3>
+          <div class="pbody">
+          <p class="attach-hint" id="attach-hint"></p>
           <div class="bar" id="bar">
-            <p class="acct">First time? <a href="https://claude.ai" target="_blank" rel="noopener">Make a free Claude account</a> first, then come back to this tab. Claude is a free AI app you type to, like texting.</p>
-            <a class="btn primary" id="openfilled" href="https://claude.ai/new" target="_blank" rel="noopener">Open Claude with this prompt</a>
-            <button class="btn ghost" id="copy" type="button">Copy prompt</button>
-            <p class="acct">Claude opens in a new tab. Add your files there before you send.</p>
+            <a class="btn primary" id="openfilled" href="https://claude.ai/new" target="_blank" rel="noopener">Open Claude with this prompt<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+            <button class="btn ghost copy" id="copy" type="button">Copy prompt</button>
+          </div>
+          <pre id="prompt" tabindex="0" aria-label="Your prompt"></pre>
           </div>
         </div>
         <p class="status" id="status" role="status" aria-live="polite"></p>
       </div>
 
       <div class="block">
-        <h3><span class="n">3</span>Add your files and send</h3>
+        <h3 class="step"><span class="step-ic" data-n="3" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M21 3L10 14"/><path d="M21 3l-6.5 18-4.5-7-7-4.5z"/></svg></span>Send it in Claude</h3>
         <div id="setup" class="stack"></div>
 
         <div class="panel">
-          <h4>What to attach or paste</h4>
           <ul class="attach" id="attach"></ul>
-          <p class="ink">Your files go to Claude, not to this site.</p>
-          <p class="ink"><strong>Before you attach anything, remove:</strong> your SIN or SSN, home address, date of birth, banking details, legal letters, and anything private about a past employer. On a paper resume, cover these before you take the photo.</p>
+          <div class="safe">
+            <p><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg><span>Files go to Claude, not here.</span></p>
+            <p class="warn"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.3-7.5 9.5-4.3-1.2-7.5-4.9-7.5-9.5V6z"/><path d="M12 8.5v4M12 15.5h.01"/></svg><span><strong>Remove first:</strong> SIN, address, birth date, banking details, legal letters, private employer details.</span></p>
+          </div>
         </div>
 
         <div class="panel">
-          <h4>Steps</h4>
           <ol class="steps">
-            <li>Tap or click <strong>Open Claude with this prompt</strong>.</li>
-            <li>Tap <strong>+</strong> in Claude to add any files listed above.</li>
-            <li>Send it. Answer Claude's questions in your own words or language.</li>
-            <li>Check every line is true before you use anything.</li>
+            <li><span class="doc-ic" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M21 3L10 14"/><path d="M21 3l-6.5 18-4.5-7-7-4.5z"/></svg></span><span>Send it. Any language works.</span></li>
+            <li><span class="doc-ic" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.8"/></svg></span><span>Check it is true.</span></li>
           </ol>
           <details class="more">
-            <summary>Having trouble?</summary>
+            <summary><span class="sum-ic" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.3a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.2-2.4 3.6"/><path d="M12 17.2h.01"/></svg></span>Having trouble?</summary>
             <ul class="tips">
               <li>Opened this page from Facebook or a text? Tap the three dots, then Open in browser.</li>
               <li>To get back here, tap the tabs button in your browser and pick CareerPilot.</li>
@@ -406,15 +527,16 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
             </ul>
           </details>
           <details class="more">
-            <summary>What will Claude do?</summary>
+            <summary><span class="sum-ic" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6h.01"/></svg></span>What will Claude do?</summary>
             <p id="expect"></p>
           </details>
           <details class="more">
-            <summary>If Claude's answer is not right</summary>
+            <summary><span class="sum-ic" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.6-5.9"/><path d="M20 4v5h-5"/></svg></span>Answer not right?</summary>
             <p>Send one of these to Claude in the same chat.</p>
             <div class="follow" id="follow"></div>
           </details>
         </div>
+        <div class="next-row"><button class="btn ghost next" id="next-guide" type="button"></button></div>
       </div>
     </div>
   </section>
@@ -424,11 +546,11 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
 <section class="learn" aria-labelledby="h-learn">
   <div class="wrap">
     <div class="learn-card">
+      <span class="learn-ic" aria-hidden="true"><svg class="i" viewBox="0 0 24 24"><path d="M2.5 9.5L12 5l9.5 4.5L12 14z"/><path d="M6.5 11.5V16c1.5 1.5 3.4 2.2 5.5 2.2s4-.7 5.5-2.2v-4.5"/><path d="M21.5 9.5v5"/></svg></span>
       <div class="learn-text">
-        <h2 id="h-learn">Want to learn basic AI skills?</h2>
-        <p>Take the tutorial or play the game at Claude Co-Worker Academy.</p>
+        <h2 id="h-learn">Learn AI basics for free</h2>
       </div>
-      <a class="btn ghost learn-btn" href="https://claude-academy.onrender.com/" target="_blank" rel="noopener">Open the Academy</a>
+      <a class="btn ghost learn-btn" href="https://claude-academy.onrender.com/" target="_blank" rel="noopener">Claude Co-Worker Academy<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
     </div>
   </div>
 </section>
@@ -436,7 +558,7 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
 <footer class="about" id="about">
   <div class="wrap">
     <h2>About CareerPilot</h2>
-    <p>CareerPilot is a free solo project to help anyone build a better career. It is for everyone tired of posts and reels that say "comment or DM to get the prompt". Getting a good prompt should be easy, and free.</p>
+    <p>A free project made by one person to help anyone build a better career.</p>
     <div class="dev">
       <p class="dev-name">Developer: <strong>Imantha Herath</strong></p>
       <a class="li-btn" href="https://www.linkedin.com/in/imanthah/" target="_blank" rel="noopener" aria-label="Connect with Imantha Herath on LinkedIn (opens in a new tab)">
@@ -446,14 +568,18 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
         Connect on LinkedIn
       </a>
     </div>
-    <p class="fine">Claude has its own privacy settings. CareerPilot is not connected with any employer or AI company, and it is not legal, financial or career advice. <span id="about-data" hidden>To have your answers to the optional questions removed, contact the developer on LinkedIn.</span><span id="about-nosave">This site does not save anything you choose.</span></p>
+    <ul class="fine">
+      <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6h.01"/></svg><span>Not legal, financial or career advice.</span></li>
+      <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M16 9h2a2 2 0 0 1 2 2v10M3 21h18M8 7h4M8 11h4M8 15h4"/></svg><span>Not connected with any employer or AI company.</span></li>
+      <li><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg><span><span id="about-data" hidden>To have your answers to the optional questions removed, contact the developer on LinkedIn. </span><span id="about-nosave">Nothing you choose is saved.</span></span></li>
+    </ul>
   </div>
 </footer>
 
 <div class="dock" id="dock" role="region" aria-label="Open your guide in Claude" hidden>
   <p class="dock-guide" id="dock-guide"></p>
   <div class="dock-head">
-    <a class="btn primary" id="openfilled2" href="https://claude.ai/new" target="_blank" rel="noopener">Open Claude with this prompt</a>
+    <a class="btn primary" id="openfilled2" href="https://claude.ai/new" target="_blank" rel="noopener">Open Claude with my prompt<svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
     <button class="dock-close" id="dock-close" type="button" aria-label="Hide this bar"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
   </div>
 </div>
@@ -466,15 +592,15 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
     ["direct", "Direct and brief", "Write in a direct, brief voice. Short sentences. No filler."]
   ];
   var ROLES = [
-    ["same", "Similar to my past work", "I think this job is similar to work I did before. Tell me if you see it differently."],
-    ["up", "A step up from my last job", "I am applying for a step up from my last role. Show that I am ready for it using only what I have actually done."],
-    ["change", "A different kind of work", "I am moving into a different kind of work. Help me show how my experience carries over, without overstating it."]
+    ["same", "Similar work", "I think this job is similar to work I did before. Tell me if you see it differently."],
+    ["up", "A step up", "I am applying for a step up from my last role. Show that I am ready for it using only what I have actually done."],
+    ["change", "A new field", "I am moving into a different kind of work. Help me show how my experience carries over, without overstating it."]
   ];
   var CLOSURE = "Background: my last employer closed down and every role ended, so I am looking for work through no fault of my own.";
   var TRUTH =
     "Rules you must follow:\n" +
     "1. Use only facts that appear in my attached documents or that I tell you in this chat. Never add or change employers, job titles, dates, numbers, tools, certifications or skills.\n" +
-    "2. If a number or detail would make something stronger but is missing, ask me for it. Do not estimate and do not use placeholders. If I am unsure of a number, leave it out.\n" +
+    "2. If a number or detail would make something stronger but is missing, ask me for it. Do not estimate, and never use placeholders for numbers, results or skills. If I am unsure of a number, leave it out.\n" +
     "3. If you are not sure something is true, ask me before you use it.";
   var STYLE = "Use plain language. Avoid buzzwords and cliches. If you use a job term I may not know, explain it in a few plain words.";
   var NO_RESUME = "I do not have a resume file. Before anything else, ask me about my last two or three jobs (job title, employer and city, start and end month and year, and what I did), then treat my answers as my resume.";
@@ -492,14 +618,14 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
 
   var TASKS = {
     profile: {
-      title: "Build my career profile", sub: "Answer a few questions about your work", tag: "Start here",
+      title: "Build my career profile", sub: "A few easy questions", tag: "Good first step",
       a: { label: "Where you are right now", opts: [
         ["know", "I know the job I want", "I know the kind of job I want. Help me sharpen how I present myself for it."],
         ["open", "I am open to options", "I am open to options. Help me find the roles that fit my experience best, including ones I may not have thought of."],
         ["change", "I want a new field", "I want to move into a different field. Help me find realistic paths and be honest about what I would need to learn."]
       ] },
       b: { label: "How many questions", opts: [["quick", "Quick, up to 10 questions"], ["full", "Full, up to 16 questions"]] },
-      checks: [["resume", "I have a resume (a file, a photo, or a paper copy)", true], ["linkedin", "I also have my LinkedIn profile as a PDF", false], ["closure", "I am looking because my company closed down", false]],
+      checks: [["resume", "I have a resume (file, photo or paper)", true], ["linkedin", "I have my LinkedIn profile as a PDF", false], ["closure", "My company closed down", false]],
       docs: function (s) { return (s.resume ? ["resume"] : []).concat(s.linkedin ? ["linkedin"] : []); },
       expect: "Claude asks you questions one at a time, like a conversation. Answer in your own words. Short answers are fine. At the end you get a short career profile. To keep it, tap the small copy icon under Claude's answer (or press and hold the text and tap Copy), then email it to yourself. Your chat also stays saved in Claude. Later you can paste it into a new chat so Claude already knows you. If you have no resume, Claude also writes a simple one for you.",
       follow: ["I am not sure how to answer. Give me a few examples to choose from."],
@@ -509,14 +635,14 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
         if (s.linkedin) att.push("my LinkedIn profile as a PDF");
         return join([
           "Act as an experienced career planner. Interview me so you understand who I am as a worker and what I want next. Then write my career profile. I am not a technical person, so use plain, friendly language.",
-          att.length ? "I have attached " + att.join(" and ") + ". Read it first so you do not ask me things it already answers." : "I have not attached any documents. Start by asking about my last two jobs, one job at a time: job title, type of employer, start and end month and year (a rough guess is fine, mark it as approximate), and the tools I used. Before you write the resume, also ask about my education.",
+          att.length ? "I have attached " + att.join(" and ") + ". Read it first so you do not ask me things it already answers." : "I have not attached any documents. Start by asking about my last two jobs, one job at a time: job title, type of employer, start and end month and year (if I do not know the month, use the year alone), and the tools I used. Before you write the resume, also ask about my education.",
           (s.closure ? CLOSURE + " " : "") + pick(TASKS.profile.a.opts, s.a),
           "How to run the interview:\n" +
           "- Ask one question at a time and wait for my answer. Keep each question short.\n" +
           "- Ask up to " + (s.b === "full" ? "16" : "10") + " main questions. Opening questions about my jobs and education do not count. Follow-ups do not count either, but ask no more than 4 of them.\n" +
           "- Cover: what I did day to day, what I was best at, results I am proud of, what people came to me for, what I enjoy and what drains me, the kind of work and workplace I want next, where I can work and my schedule needs, the pay I need, and anything I will not do.\n" +
           "- If my answer is vague, ask one follow-up for a real example or a number.\n" +
-          "- Do not assume anything I have not said. If I seem stuck, give me two or three examples to choose from.",
+          "- Do not assume anything I have not said. If I seem stuck, give me two or three kinds of answers to choose from, and use only what I confirm is true.",
           TRUTH,
           "After the interview, write my career profile with these headings. Keep each part short:\n" +
           "1. Summary: 3 sentences on who I am as a professional.\n" +
@@ -527,13 +653,13 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
           "6. Gaps to be honest about, with one practical way to close each.\n" +
           "7. My 30-second introduction, written the way I would say it out loud." +
           (s.resume ? "" : "\n8. A simple one-page resume built only from my answers, because I do not have one."),
-          "Then ask me if anything is wrong or missing and fix it. When I say it is right, tell me to copy the profile and email it to myself, so I can paste it into future chats." + (s.resume ? "" : " Then tell me what to add to the resume myself (my name, phone, email and each employer's name) and step by step how to copy it into Word or Google Docs and save it as a PDF, on a phone and on a computer."),
+          "Then ask me if anything is wrong or missing and fix it. When I say it is right, tell me to copy the profile and email it to myself, so I can paste it into future chats." + (s.resume ? "" : " In that resume, write [Your name], [Phone] and [Email] where they go, plus [Employer name] for any employer I did not name, for me to fill in. Then tell me step by step how to copy it into Word or Google Docs and save it as a PDF, on a phone and on a computer."),
           STYLE
         ]);
       }
     },
     canada: {
-      title: "Make a one-page Canadian resume", sub: "Clean Harvard-style format Canadian employers expect",
+      title: "One-page Canadian resume", sub: "Simple layout employers like",
       a: { label: "Your work experience", opts: [
         ["under5", "Less than 5 years", "I have less than 5 years of work experience."],
         ["mid", "5 to 15 years", "I have about 5 to 15 years of work experience. Focus on the most recent and relevant 10 years."],
@@ -544,7 +670,7 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
         ["up", "A step up from my last job", "I want a step up from my last job. Show that I am ready for it using only what I have actually done."],
         ["change", "A different kind of work", "I want to move into a different kind of work. Show how my experience carries over, without overstating it."]
       ] },
-      checks: [["resume", "I have a resume (a file, a photo, or a paper copy)", true], ["linkedin", "I also have my LinkedIn profile as a PDF", false]],
+      checks: [["resume", "I have a resume (file, photo or paper)", true], ["linkedin", "I have my LinkedIn profile as a PDF", false]],
       docs: function (s) { return (s.resume ? ["resume"] : []).concat(s.linkedin ? ["linkedin"] : []).concat(["profile"]); },
       expect: "Claude asks you a few short questions about missing details, then writes a one-page resume in a clean Canadian format. At the end it tells you how to save it as a PDF and a Word file. Check every line is true before you use it.",
       follow: ["It is longer than one page. Make it fit on one page without removing my most recent job."],
@@ -554,13 +680,13 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
             (s.resume ? "I have attached my resume." : NO_RESUME + (s.b === "change" ? " Also ask me what kind of work I want to move into and about my education." : "")) + (s.linkedin ? " If I attached my LinkedIn profile as a PDF, use it too. If you cannot see it, go by my answers." : "") + " " + PROFILE_NOTE,
           pick(TASKS.canada.a.opts, s.a) + " " + pick(TASKS.canada.b.opts, s.b),
           TRUTH,
-          "Step 1: Before you write, ask me up to 5 short questions in one message about details that would make the resume stronger, such as results with numbers, tools I used, certifications or volunteer work. Also ask for any contact details that are missing. Leave out anything I do not have. Wait for my answers.",
+          "Step 1: Before you write, ask me up to 5 short questions in one message about details that would make the resume stronger, such as results with numbers, tools I used, certifications or volunteer work. Also ask for any contact details or employer names that are missing. Leave out anything I do not have. Wait for my answers.",
           "Step 2: Write the resume with these rules.\n" +
           "Layout (Harvard style):\n" +
           "- One page. One column. No tables, text boxes, columns, graphics, photos, icons or colours, so hiring software can read it.\n" +
           "- My name at the top. Under it, one line with my city and province, phone, email and LinkedIn link. Keep this in the main page, not in a header or footer.\n" +
-          "- Plain section headings in this order: Summary (2 or 3 lines), Experience, Education, Skills. Add Certifications or Volunteer Experience only if I have them.\n" +
-          "- Experience newest first. For each job: employer and city on one line with the dates at the right, then the job title on the next line.\n" +
+          "- Plain section headings: Summary (2 or 3 lines, only if it helps), Experience, Education, Skills. Put Education before Experience only if I finished school in the last 3 years. Add Certifications or Volunteer Experience only if I have them.\n" +
+          "- Experience newest first. For each job: employer, city and dates on one line (for example: ABC Ltd., Calgary, AB | March 2022 to October 2026), then the job title on the next line.\n" +
           "- Write every job date as month and year (for example, March 2024). For school, or if I do not know the month, use the year alone.\n" +
           "- 3 to 5 bullets for recent jobs, fewer for older ones. Start each bullet with an action verb and end with the result where I gave one.\n" +
           "Canadian rules:\n" +
@@ -575,10 +701,10 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
       }
     },
     jobs: {
-      title: "Find jobs and check them", sub: "New postings, how well you fit, warning signs",
+      title: "Find jobs and check them", sub: "Spot scam postings",
       a: { label: "How Claude searches", opts: [["web", "Simple: web search"], ["apify", "Advanced: Apify (most skip)"]] },
       b: { label: "How often", opts: [["manual", "When I ask"], ["daily", "Daily (paid plan)"], ["weekly", "Weekly (paid plan)"]] },
-      checks: [["resume", "I have a resume (a file, a photo, or a paper copy)", true], ["remote", "Include remote jobs", true]],
+      checks: [["resume", "I have a resume (file, photo or paper)", true], ["remote", "Include remote jobs", true]],
       docs: function (s) { return (s.resume ? ["resume"] : []).concat(["profile"]); },
       expect: "Claude asks a few questions, then searches and gives you a short list. For each job it says how well you fit, whether to apply, and any warning signs. Be ready for a short list: a web search misses many jobs and often cannot see when a job was posted. Use this next to your own search on the big job sites, not instead of it. Always open the link and confirm the job on the employer's own website before you apply or share personal details.",
       follow: ["Check again. Only show jobs you have not shown me before.", "Look more closely at the first job. Is the employer real and is the posting genuine?", "I found this job myself. Check it the same way. I will paste the posting next."],
@@ -607,22 +733,22 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
         var sched = s.b !== "manual";
         var search = s.a === "apify"
           ? "Then search using my Apify connector:\n" +
-            "- Before the first search, tell me in plain words which Apify tool you plan to use and whether it will use my Apify credits. Wait for my OK." + (sched ? " After I say OK once, later scheduled runs may repeat the same search without asking again.\n" : "\n") +
+            "- Before the first search, tell me in plain words which Apify tool you plan to use and whether it will use my Apify credits. Wait for my OK." + (sched ? " After I say OK once, write that OK into the scheduled task so later runs can repeat the search without asking.\n" : "\n") +
             "- Keep each search to 25 results or fewer.\n" +
             "- If the connector is missing or fails, tell me, use your normal web search instead, and warn me that a web search misses many jobs and often cannot show posting dates."
-          : "Then search the web for job postings that are still open. If you cannot confirm a job is still open, write \"could not confirm it is open\". Check employers' own careers pages as well as job boards. Tell me up front that a web search misses many jobs and often cannot show posting dates, so I should also search the big job sites myself (such as Indeed, LinkedIn, and Job Bank in Canada).";
+          : "Then search the web for job postings that are still open. If you cannot search the web, tell me plainly and stop. If you cannot confirm a job is still open, write \"could not confirm it is open\". Check employers' own careers pages as well as job boards. Tell me up front that a web search misses many jobs and often cannot show posting dates, so I should also search the big job sites myself (such as Indeed, LinkedIn, and Job Bank in Canada).";
         var schedLine = !sched ? ""
-          : "After this first list, set this up as a scheduled task that runs " + (s.b === "daily" ? "every morning" : "every Monday morning") + ". Write my answers, a short summary of my background and the jobs already shown into the task, so each run works without asking me anything. Each run should leave out the jobs written into the task and show only jobs posted in the last 7 days, in the same format. If a date is not shown, include the job and say it may be a repeat. If you cannot create a scheduled task on my plan, tell me plainly and I will ask you again myself.";
+          : "After this first list, set this up as a scheduled task that runs " + (s.b === "daily" ? "every morning" : "every Monday morning") + ". Write my answers, a short summary of my background and the jobs already shown into the task, so each run works without asking me anything. Each run should leave out the jobs written into the task and show only jobs posted in the last 7 days, in the same format. If a date is not shown, include the job and say it may be a repeat. If you cannot create a scheduled task here, tell me plainly, and I will paste this prompt again myself each week.";
         return join([
           "Act as my job search assistant. Find current job postings that fit me, check whether each one is genuine, and tell me which are worth applying to. " + (s.resume ? "I have attached my resume." : NO_RESUME) + " " + PROFILE_NOTE + " I am not a technical person, so use plain language.",
           (s.remote ? "Include remote jobs I am allowed to do from where I live." : "Only include jobs I can travel to. Leave out remote-only jobs.") +
           " First, ask me these questions together in one short message, unless my documents already answer them: the job titles I want, my city and how far I can travel, the lowest pay I would accept, and anything I will not do. Wait for my answers.",
           search,
           "Rules you must follow:\n" +
-          "1. Only list jobs that came from this search, and open each link before you list it. Never invent a job, an employer, a pay figure or a link.\n" +
+          "1. Only list jobs that came from this search. Open each link before you put the job in the main list. Never invent a job, an employer, a pay figure or a link.\n" +
           "2. Put any posting you could not open in a separate short list called \"Could not check\", with its link.\n" +
           "3. If the posting date is not shown, write \"date not shown\". Leave out postings that are closed or clearly more than 30 days old.\n" +
-          "4. Leave out a job only if its top pay is below my lowest pay. If pay is hourly, show it as hourly and say roughly what that is per year at 40 hours a week.\n" +
+          "4. If pay is shown and its top is below my lowest pay, leave the job out. If pay is hourly, show it as hourly and say roughly what that is per year at 40 hours a week.\n" +
           "5. Base the fit only on my documents and my answers. Do not assume skills I have not mentioned.\n" +
           "6. Write \"could not check\" for anything you cannot see. Do not guess.",
           "Show me up to 5 jobs, best fit first. For each job give:\n" +
@@ -638,10 +764,10 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
       }
     },
     resume: {
-      title: "Fit my resume to a job", sub: "Match it to one job posting",
+      title: "Fit my resume to a job", sub: "For one job posting",
       a: { label: "The job is", opts: ROLES },
-      b: { label: "What you want back", opts: [["full", "Check and rewrite"], ["check", "Check only"]] },
-      checks: [["resume", "I have a resume (a file, a photo, or a paper copy)", true], ["linkedin", "I also have my LinkedIn profile as a PDF", false], ["closure", "I am looking because my company closed down", false]],
+      b: { label: "You want", opts: [["full", "Check and rewrite"], ["check", "Check only"]] },
+      checks: [["resume", "I have a resume (file, photo or paper)", true], ["linkedin", "I have my LinkedIn profile as a PDF", false], ["closure", "My company closed down", false]],
       docs: function (s) { return (s.resume ? ["resume"] : []).concat(["posting"]).concat(s.linkedin ? ["linkedin"] : []).concat(["profile"]); },
       expect: "Claude first shows how well your resume matches the job and asks you a few questions about the gaps. It only rewrites after you answer. The match is an estimate, not a score from the software employers use to sort applications. At the end Claude tells you how to save the new resume as a file.",
       follow: [],
@@ -657,7 +783,7 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
             "- End with a short list of what you changed and why.\n" +
             "- Then tell me, step by step, how to copy it into Word or Google Docs and save it as a PDF, on a phone and on a computer. Do not describe buttons in this app unless you are sure they exist. Also tell me what to check before I send it.";
         return join([
-          "I need help tailoring my resume to one specific job. " + (s.resume ? "I have attached my resume and the job posting" : "I have attached or pasted the job posting") + (s.linkedin ? ", plus my LinkedIn profile as a PDF for extra detail." : ".") + (s.resume ? "" : " " + NO_RESUME) + " " + PROFILE_NOTE,
+          "I need help fitting my resume to one specific job. " + (s.resume ? "I have attached my resume and the job posting" : "I have attached or pasted the job posting") + (s.linkedin ? ", plus my LinkedIn profile as a PDF for extra detail." : ".") + (s.resume ? "" : " " + NO_RESUME) + " " + PROFILE_NOTE,
           (s.closure ? CLOSURE + " " : "") + pick(ROLES, s.a),
           TRUTH,
           "Step 1: Match check. Do this first and do not rewrite anything yet.\n" +
@@ -666,7 +792,7 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
           "- Give an overall rating: Strong match, Partial match or Weak match. Tell me plainly if this job is a poor fit.\n" +
           "- Split the gaps into two lists: things I may have done but did not write down, and real gaps.\n" +
           "- Remind me that this is your estimate and not a real score from an employer's hiring software (an applicant tracking system), because each employer's system is private.\n" +
-          "- Last, ask me about the 5 most important possible gaps, as numbered questions I can answer in a few words.\n" +
+          "- Last, ask me about up to 5 of the most important possible gaps, plus any missing phone, email or LinkedIn, as numbered questions I can answer in a few words.\n" +
           "Then stop and wait for my answers.",
           step2,
           STYLE
@@ -674,9 +800,9 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
       }
     },
     ats: {
-      title: "Check my resume for ATS", sub: "Will hiring software read it? Get a score and fixes",
+      title: "Check my resume for ATS", sub: "Will software read it?",
       a: { label: "Check against", opts: [["posting", "A job posting I have"], ["general", "No posting, general check"]] },
-      b: { label: "What you want back", opts: [["check", "Score and fix list"], ["fix", "Score, fixes and a fixed version"]] },
+      b: { label: "You want", opts: [["check", "Score and fix list"], ["fix", "Score, fixes and a fixed version"]] },
       checks: [["pdf", "My resume is a PDF file (remove the check if it is a Word file)", true]],
       docs: function (s) { return ["resume"].concat(s.a === "posting" ? ["posting"] : []); },
       expect: "Claude gives your resume a score out of 100 and a list of fixes, most important first. The score is Claude's estimate, not a real score from an employer's hiring software. It also shows you a simple test you can do yourself.",
@@ -691,8 +817,8 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
           "Score my resume out of 100 with this scale. Show the points for each part and one line on why:\n" +
           "- Easy for software to read (30): one column; no tables, text boxes, columns, images or icons; contact details not in a header or footer; real text.\n" +
           "- Standard section headings (15): such as Summary, Experience, Education and Skills.\n" +
-          "- Contact details (10): name, city and province, phone, email and LinkedIn.\n" +
-          "- Dates and job titles (10): one date format everywhere and clear job titles.\n" +
+          "- Contact details (10): name, city and province, phone and email. LinkedIn is a bonus, not required.\n" +
+          "- Dates and job titles (10): one date format for all jobs (school can show the year alone) and clear job titles.\n" +
           (post
             ? "- Match with the posting (35): list the 10 to 15 most important skills and keywords in the posting and mark each one Found, Partly found or Missing, quoting where it appears in my resume. Each keyword is worth 35 divided by the number you list. Found = full points, Partly found = half, Missing = 0. Round the total to the nearest whole point and show the arithmetic. Explain any job term in a few plain words."
             : "- Strong, clear content (35): bullets that start with action verbs and show results, no long paragraphs, one to two pages.") +
@@ -708,10 +834,10 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
       }
     },
     cover: {
-      title: "Write a cover letter", sub: "For one job posting",
+      title: "Write a cover letter", sub: "Short and personal",
       a: { label: "The job is", opts: ROLES },
       b: { label: "Tone", opts: TONES },
-      checks: [["resume", "I have a resume (a file, a photo, or a paper copy)", true], ["mention", "Mention in the letter that my company closed down", false], ["linkedin", "I also have my LinkedIn profile as a PDF", false]],
+      checks: [["resume", "I have a resume (file, photo or paper)", true], ["mention", "Mention in the letter that my company closed down", false], ["linkedin", "I have my LinkedIn profile as a PDF", false]],
       docs: function (s) { return (s.resume ? ["resume"] : []).concat(["posting"]).concat(s.linkedin ? ["linkedin"] : []).concat(["profile"]); },
       expect: "Claude asks you two or three short questions first, then writes one letter. Treat it as a first draft and change anything that does not sound like you.",
       follow: [],
@@ -730,12 +856,12 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
             : "- Do not mention why I left my last job.\n") +
           "- End with a simple, confident closing line.",
           pick(TONES, s.b) + " Use Canadian spelling. " + STYLE,
-          "After the letter, list any sentence I should double check for accuracy. Then tell me what to add myself (name, date, contact details) and, step by step, how to copy it into Word or Google Docs and save it as a PDF, on a phone and on a computer. Do not describe buttons in this app unless you are sure they exist."
+          "After the letter, list any sentence I should double check for accuracy. Put [Your name], [Date] and [Your phone and email] where they go, for me to fill in. Then, step by step, tell me how to copy it into Word or Google Docs and save it as a PDF, on a phone and on a computer. Do not describe buttons in this app unless you are sure they exist."
         ]);
       }
     },
     interview: {
-      title: "Prepare for an interview", sub: "Likely questions and your answers",
+      title: "Prepare for an interview", sub: "Practise your answers",
       a: { label: "Type of interview", opts: [
         ["phone", "First phone or video call", "It is a first phone or video call with a recruiter. Focus on my background, why I want this job, pay expectations and availability."],
         ["behav", "\"Tell me about a time\"", "It is a behavioural interview with \"tell me about a time\" questions. Focus on real examples from my work."],
@@ -743,7 +869,7 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
         ["unsure", "Not sure yet", "I do not know the format yet, so cover a mix of recruiter, behavioural and role-specific questions."]
       ] },
       b: { label: "How to prepare", opts: [["mock", "One question at a time"], ["list", "List of questions and notes"]] },
-      checks: [["resume", "I have a resume (a file, a photo, or a paper copy)", true], ["posting", "I have the job posting", true], ["closure", "I am looking because my company closed down", false]],
+      checks: [["resume", "I have a resume (file, photo or paper)", true], ["posting", "I have the job posting", true], ["closure", "My company closed down", false]],
       docs: function (s) { return (s.resume ? ["resume"] : []).concat(s.posting ? ["posting"] : []).concat(["profile"]); },
       expect: "Claude builds your answers from your own work history and asks you for details it is missing. It works a few questions at a time so it is not too much to read. Say the answers out loud a few times. Do not memorise them word for word.",
       follow: [],
@@ -754,7 +880,7 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
             "- Ask me one question at a time and wait for my answer.\n" +
             "- After each answer, tell me what worked and what to cut. Then show a tighter version in 3 short parts (the situation, what I did, the result) that uses only what I said.\n" +
             "- Ask at most one follow-up per answer, for example what happened in the end. If I have no example, move to a different question.\n" +
-            "- After question 3, ask if I want to keep going. Ask 6 questions in total, then give me the 3 things to work on most."
+            "- After question 3, ask if I want to keep going. Stop after 6 questions, or sooner if I say so, then give me the 3 things to work on most."
           : "Work in small batches so I can keep up:\n" +
             "- Start with the 3 questions I am most likely to be asked.\n" +
             "- For each one, write answer notes as 3 short bullets that I can say in under 2 minutes. For questions about my past work, use the situation, what I did and the result, built from a real example in my resume or my answers. For questions about pay or availability, ask me for my number and dates first, then give me one or two plain sentences.\n" +
@@ -776,7 +902,7 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
       }
     },
     closure: {
-      title: "Explain why I am looking", sub: "A short, honest answer to \"Why are you looking?\"",
+      title: "Explain why I am looking", sub: "Short and honest",
       a: { label: "Why you are looking", opts: [
         ["cymax", "I worked at Cymax or Freight Club", "I worked at Cymax Group Technologies or Freight Club. The company closed down in October 2026 and every role ended. It had nothing to do with my performance."],
         ["closed", "My company closed down", "My last employer closed down and every role ended. It had nothing to do with my performance."],
@@ -807,13 +933,13 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
           "I need help explaining why I am looking for work. " + reason,
           pick(TASKS.closure.b.opts, s.b),
           s.resume ? "I have attached my resume. " + TRUTH : "Rules you must follow:\n1. Use only what I tell you in this chat. Never invent details about me, my role or my employer.\n2. If you need a detail, ask me for it.",
-          "First ask me three short questions in one message: " + past + ", one thing I did well, and what kind of work I want next." + (s.a === "other" && !s.other ? " Also ask me why I am looking." : "") + " Wait for my answers.",
+          (s.a === "other" && !s.other ? "First ask me four short questions in one message: why I am looking, " : "First ask me three short questions in one message: ") + past + ", one thing I did well, and what kind of work I want next." + (s.resume ? " Skip any my resume already answers." : "") + " Wait for my answers.",
           "Then give me 3 versions. Each one must:\n" +
           "- State my reason as a plain fact in one sentence. Do not add reasons I did not give.\n" +
           "- Have no apology, no blame and no negative comments about anyone.\n" +
           "- Name the employer only if I ask you to.\n" +
           "- Move quickly to what I did well and what I want to do next.",
-          "Then tell me which version you would pick and why, and remind me to say it out loud 3 times before I use it.",
+          "Then tell me which version you would pick and why, and remind me to " + ({ interview: "say it out loud 3 times before I use it", recruiter: "say it out loud 3 times before I use it", letter: "read it in my cover letter to check it fits", post: "reread it before I post it" }[s.b] || "reread it before I use it") + ".",
           pick(TONES, "natural") + " " + STYLE
         ]);
       }
@@ -843,7 +969,17 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
     closure: svg('<path d="M10 4h7a2 2 0 0 1 2 2v14"/><path d="M7 20h14"/><path d="M2.5 12h9"/><path d="M8.5 9l3 3-3 3"/><circle cx="15.5" cy="12" r=".5"/>')
   };
   var DOC_ICON = svg('<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/>');
+  var DOC_ICONS = {
+    resume: DOC_ICON,
+    posting: svg('<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8.5 7V5.5A1.5 1.5 0 0 1 10 4h4a1.5 1.5 0 0 1 1.5 1.5V7"/><path d="M3 12.5h18"/>'),
+    linkedin: svg('<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2.2"/><path d="M5.8 16c.6-1.5 1.8-2.3 3.2-2.3s2.6.8 3.2 2.3M14.5 10h3.5M14.5 13.5h3.5"/>'),
+    profile: svg('<circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.9-3.6 3.7-5.6 7-5.6s6.1 2 7 5.6"/>')
+  };
+  var STAGE_CLASS = { "Get ready": "st-1", "Find": "st-2", "Apply": "st-3", "Interview": "st-4" };
   var CHECK = svg('<path d="M5 12.5l4.5 4.5L19 7.5"/>');
+  var HINT_ICON = svg('<path d="M20.5 11.5l-8.3 8.3a5 5 0 0 1-7.1-7.1l8.3-8.3a3.4 3.4 0 0 1 4.8 4.8l-8.2 8.2a1.7 1.7 0 0 1-2.4-2.4l7.6-7.6"/>');
+  var ARROW = svg('<path d="M5 12h14M13 6l6 6-6 6"/>');
+  var NEXT = { profile: "canada", canada: "ats", jobs: "resume", resume: "ats", ats: "cover", cover: "interview", interview: "closure", closure: "interview" };
   var CLAUDE_NEW = "https://claude.ai/new?q=";
   var reduce = false;
   try { reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches; } catch (e) {}
@@ -865,7 +1001,7 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
   }
 
   function selectTask(key) {
-    var dg = document.getElementById("dock-guide"); if (dg) dg.textContent = "Your guide: " + TASKS[key].title;
+    var dg = document.getElementById("dock-guide"); if (dg) dg.textContent = TASKS[key].title;
     var t = TASKS[key];
     state = { task: key, a: t.a.opts[0][0], b: t.b.opts[0][0] };
     t.checks.forEach(function (c) { state[c[0]] = c[2]; });
@@ -886,7 +1022,7 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
       inp.addEventListener("change", function () { state[c[0]] = inp.checked; render(); });
       lab.appendChild(inp); lab.appendChild(el("span", null, c[1]));
       box.appendChild(lab);
-      if (c[0] === "resume" && c[2]) box.appendChild(el("p", { "class": "check-hint" }, "No resume? Remove the check and Claude will ask about your jobs."));
+      if (c[0] === "resume" && c[2]) box.appendChild(el("p", { "class": "check-hint" }, "No resume? Remove the check."));
     });
     render();
   }
@@ -912,17 +1048,23 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
 
     var list = $("attach"); list.textContent = "";
     var docs = t.docs(state);
+    var hint = $("attach-hint"); hint.innerHTML = HINT_ICON;
+    hint.appendChild(el("span", null, docs.length
+      ? "In Claude, tap + to add: " + docs.map(function (d) { return DOCS[d].name; }).join(", ") + "." + (docs.indexOf("resume") >= 0 ? " Paper resume? Take a photo." : "")
+      : "Nothing to add. Just send it."));
+    var nk = NEXT[state.task], nb = $("next-guide");
+    nb.dataset.key = nk; nb.innerHTML = ""; nb.appendChild(document.createTextNode("Next: " + TASKS[nk].title)); nb.insertAdjacentHTML("beforeend", ARROW);
     if (!docs.length) list.appendChild(el("li", null, "Nothing to attach for this one. Just send the prompt."));
     docs.forEach(function (d) {
       var li = el("li");
-      var lab = el("div", { "class": "doc" });
-      var ic = el("span", { "aria-hidden": "true" }); ic.innerHTML = DOC_ICON;
-      lab.appendChild(ic.firstChild);
-      lab.appendChild(el("strong", null, DOCS[d].name));
-      var det = el("details");
-      det.appendChild(el("summary", null, d === "profile" ? "What is this?" : "How do I get this?"));
+      var det = el("details", { "class": "doc" });
+      var sum = el("summary");
+      var ic = el("span", { "class": "doc-ic", "aria-hidden": "true" }); ic.innerHTML = DOC_ICONS[d] || DOC_ICON;
+      sum.appendChild(ic);
+      sum.appendChild(el("strong", null, DOCS[d].name));
+      det.appendChild(sum);
       det.appendChild(el("p", null, DOCS[d].how));
-      li.appendChild(lab); li.appendChild(det); list.appendChild(li);
+      li.appendChild(det); list.appendChild(li);
     });
 
     var setup = $("setup"); setup.textContent = "";
@@ -967,7 +1109,7 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
 
   order.forEach(function (key) {
     var t = TASKS[key];
-    var b = el("button", { type: "button", "class": "task", "aria-pressed": "false" });
+    var b = el("button", { type: "button", "class": "task " + (STAGE_CLASS[STAGE[key]] || "st-1"), "aria-pressed": "false" });
     b.dataset.key = key;
     var tile = el("span", { "class": "tile", "aria-hidden": "true" });
     tile.innerHTML = ICONS[key];
@@ -983,16 +1125,18 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
     body.appendChild(el("strong", null, t.title));
     body.appendChild(el("span", { "class": "sub" }, t.sub));
     b.appendChild(tile); b.appendChild(body);
-    b.addEventListener("click", function () {
-      $("tasks").classList.add("chosen");
-      var lead = document.getElementById("picked-lead"); if (lead) lead.textContent = "You picked:";
-      selectTask(key);
-      showDock();
-      var o = $("options");
-      if (o && o.scrollIntoView) o.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
-    });
+    b.addEventListener("click", function () { chooseTask(key); });
     $("tasks").appendChild(b);
   });
+  function chooseTask(key) {
+    $("tasks").classList.add("chosen");
+    var lead = document.getElementById("picked-lead"); if (lead) lead.textContent = "You picked:";
+    selectTask(key);
+    showDock();
+    var o = $("options");
+    if (o && o.scrollIntoView) o.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+  }
+  $("next-guide").addEventListener("click", function () { chooseTask(this.dataset.key); });
   $("selA").addEventListener("change", function () { state.a = this.value; render(); });
   $("selB").addEventListener("change", function () { state.b = this.value; render(); });
   $("other-text").addEventListener("input", function () { state.other = this.value.replace(/[\u0000-\u001f]/g, " ").trim().slice(0, 160); render(); });
@@ -1003,17 +1147,28 @@ ol.steps li::marker { font-weight: 700; color: var(--teal-ink); }
   });
   $("copy").addEventListener("click", function () { copyText($("prompt").textContent, this, "Copied", "Copy prompt", "Copied. Now open Claude and paste it."); });
 
-  /* Phone-only bar. It shows after a guide card is tapped, and steps aside while the prompt,
-     its buttons or the welcome questions are on screen. */
-  function showDock() { $("dock").hidden = false; document.body.classList.add("has-dock"); }
-  $("dock-close").addEventListener("click", function () { $("dock").hidden = true; document.body.classList.remove("has-dock"); });
+  /* Phone-only bar. It shows only after a guide is picked AND the prompt card has been on screen
+     once, and steps aside while the prompt, its buttons or the welcome questions are on screen. */
+  var dockPicked = false, dockSeen = false, dockClosed = false;
+  function updateDock() {
+    var on = dockPicked && dockSeen && !dockClosed;
+    $("dock").hidden = !on; document.body.classList.toggle("has-dock", on);
+  }
+  function showDock() { dockPicked = true; updateDock(); }
+  $("dock-close").addEventListener("click", function () { dockClosed = true; updateDock(); });
   if (typeof IntersectionObserver !== "undefined") {
     var onScreen = {};
     var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) { onScreen[e.target.id] = e.isIntersecting; });
+      entries.forEach(function (e) {
+        onScreen[e.target.id] = e.isIntersecting;
+      });
       $("dock").classList.toggle("tucked", !!(onScreen.bar || onScreen.prompt || onScreen.welcome));
     });
     io.observe($("bar")); io.observe($("prompt")); io.observe($("welcome"));
+    /* The prompt card counts as seen once it reaches the upper two thirds of the screen. */
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting && !dockSeen) { dockSeen = true; updateDock(); } });
+    }, { rootMargin: "0px 0px -35% 0px" }).observe($("promptcard"));
   }
 
   selectTask("profile");
